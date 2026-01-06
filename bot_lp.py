@@ -14,7 +14,7 @@ def scraping_la_plata():
         titulares = soup.find_all('h2')
         
         hallazgos = []
-        palabras_alerta = ["corte", "luz", "agua", "choque", "incendio", "edelap", "absa", "inundación", "tránsito"]
+        palabras_alerta = ["corte", "luz", "agua", "choque", "incendio", "edelap", "absa", "inundación", "tránsito", "robo", "secuestro", "persecución", "tiroteo", "motochorro", "asalto", "policía"]
         
         for t in titulares:
             texto = t.get_text().lower()
