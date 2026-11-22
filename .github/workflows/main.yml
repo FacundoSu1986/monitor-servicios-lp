@@ -34,6 +34,8 @@ jobs:
       - name: Correr el bot
         env:
           TZ: America/Buenos_Aires
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python bot_lp.py
 
       - name: Guardar cambios
@@ -47,3 +49,24 @@ jobs:
           fi
           git commit -m "Actualización automática de historial"
           git push
+
+      - name: Avisar error por Telegram
+        if: failure()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          set +x
+          if [ -z "${TELEGRAM_BOT_TOKEN}" ] || [ -z "${TELEGRAM_CHAT_ID}" ]; then
+            echo "Telegram no configurado; se omite el aviso."
+            exit 0
+          fi
+          texto="Monitor LP: falló el workflow. ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          codigo=$(curl -sS -o /tmp/tg-fail.json -w "%{http_code}" --max-time 30 \
+            -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -H "Content-Type: application/json" \
+            -d "{\"chat_id\": \"${TELEGRAM_CHAT_ID}\", \"text\": \"${texto}\"}")
+          if [ "$codigo" != "200" ]; then
+            echo "No se pudo avisar por Telegram (HTTP ${codigo})."
+            exit 0
+          fi
