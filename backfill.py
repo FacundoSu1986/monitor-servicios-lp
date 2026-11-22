@@ -27,7 +27,7 @@ from bs4 import BeautifulSoup
 
 import bot_lp
 from bot_lp import (
-    ARCHIVO,
+    ruta_historial,
     CAMPOS,
     TIMEOUT,
     SECCIONES,
@@ -307,7 +307,7 @@ def run(args: argparse.Namespace) -> int:
         logging.error("La fecha --hasta es anterior a --desde")
         return 2
     secciones = {s.strip() for s in args.secciones.split(",") if s.strip()}
-    path = Path(args.csv)
+    path = Path(args.csv) if args.csv else ruta_historial()
     logging.info("Ventana %s → %s (%s)", desde.isoformat(), hasta.isoformat(), TZ.key)
     logging.info("Secciones: %s", ", ".join(sorted(secciones)))
 
@@ -363,7 +363,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Backfill del historial de 0221 (sin Telegram)")
     p.add_argument("--desde", required=True, help='Inicio de la ventana, hora de Argentina. Ej: "2026-11-04 22:16"')
     p.add_argument("--hasta", required=True, help='Fin de la ventana. Si es solo una fecha, incluye ese día hasta las 23:59')
-    p.add_argument("--csv", default=str(ARCHIVO), help="Ruta del historial (default: historial_lp.csv)")
+    p.add_argument("--csv", default=None, help="Ruta del historial (default: HISTORIAL_PATH o historial_lp.csv)")
     p.add_argument("--secciones", default=",".join(SECCIONES_DEFAULT), help="Secciones de 0221, separadas por coma")
     p.add_argument("--delay", type=float, default=1.0, help="Pausa en segundos entre pedidos HTTP (default: 1.0)")
     p.add_argument("--dry-run", action="store_true", help="No escribe el CSV")

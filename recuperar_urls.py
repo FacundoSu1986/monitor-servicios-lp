@@ -35,7 +35,7 @@ from backfill import (
     urls_sitemap_mensual,
     escribir_historial,
 )
-from bot_lp import ARCHIVO, SECCIONES, TZ, clave_nota, parse_fecha_iso, seccion_de
+from bot_lp import SECCIONES, TZ, clave_nota, parse_fecha_iso, ruta_historial, seccion_de
 
 _SIN_TILDES = str.maketrans("áéíóúüÁÉÍÓÚÜñÑ", "aeiouuAEIOUUnN")
 _STOP = frozenset(
@@ -279,7 +279,7 @@ def cargar_sitemaps(
 def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     p = argparse.ArgumentParser(description="Recupera URLs de filas viejas del historial (sin Telegram).")
-    p.add_argument("--csv", default=str(ARCHIVO))
+    p.add_argument("--csv", default=None, help="Ruta del historial (default: HISTORIAL_PATH o historial_lp.csv)")
     p.add_argument("--delay", type=float, default=1.0)
     p.add_argument("--ventana", type=int, default=VENTANA_DIAS_DEFAULT, help="Días de holgura alrededor de la fecha de la fila")
     p.add_argument("--secciones", default=",".join(sorted(SECCIONES_DEFAULT)))
@@ -288,7 +288,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--dry-run", action="store_true")
     args = p.parse_args(argv)
 
-    path = Path(args.csv)
+    path = Path(args.csv) if args.csv else ruta_historial()
     filas = normalizar_historial(path)
     if not filas:
         logging.error("No hay filas en %s", path)

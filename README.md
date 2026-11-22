@@ -2,8 +2,9 @@
 
 Historial de servicios y eventos en Gran La Plata: cortes de luz, agua y gas,
 cortes de tránsito, accidentes, incendios y hechos policiales publicados por el
-diario [0221](https://www.0221.com.ar). Los guarda en `historial_lp.csv` y avisa
-los nuevos por Telegram.
+diario [0221](https://www.0221.com.ar). El historial crudo (titulares) se guarda
+en un [repositorio privado](https://github.com/FacundoSu1986/monitor-servicios-lp-datos)
+y los avisos de novedades van por Telegram.
 
 ## Cómo funciona
 
@@ -29,13 +30,14 @@ los nuevos por Telegram.
    y fecha del hecho). El resultado va a `notas_enriquecidas.geojson`. Solo las
    precisiones `esquina` y `cuadra` llevan coordenadas; un barrio o localidad no
    se dibuja como punto en el centroide (evita zonas calientes falsas).
-5. Manda lo nuevo por Telegram y el workflow commitea el CSV y el GeoJSON.
+5. Manda lo nuevo por Telegram. El workflow commitea los GeoJSON y el mapa en
+   este repo, y el CSV en el repositorio privado.
 
 Si una fuente falla, el bot sigue con la otra y avisa por Telegram. Si fallan
 las dos (o una responde sin titulares, por ejemplo porque cambió el HTML), sale
 con error y el workflow avisa el fallo.
 
-### Columnas de `historial_lp.csv`
+### Columnas de `historial_lp.csv` (repo privado)
 
 | columna    | contenido                                                                 |
 |------------|---------------------------------------------------------------------------|
@@ -46,12 +48,14 @@ con error y el workflow avisa el fallo.
 
 ## Configuración
 
-En *Settings → Secrets and variables → Actions* del repo:
+En *Settings → Secrets and variables → Actions* de este repo:
 
 - `TELEGRAM_BOT_TOKEN`: token del bot (lo da BotFather en Telegram).
 - `TELEGRAM_CHAT_ID`: chat o grupo donde llegan los avisos.
+- `DATA_REPO_DEPLOY_KEY`: clave privada de la deploy key con escritura sobre
+  el repo de datos. El workflow la usa para clonar y actualizar el CSV.
 
-Sin esos secretos el bot funciona igual, solo no avisa.
+Sin los secretos de Telegram el bot funciona igual, solo no avisa.
 
 El horario está en el `cron` de `main.yml` (UTC). Un segundo cron semanal hace
 un commit vacío si no hubo actividad en 50 días, para que GitHub no desactive
@@ -64,10 +68,17 @@ pip install -r requirements.txt
 ```
 
 ```bash
+# Local: el default es ./historial_lp.csv (está en .gitignore).
+# En Actions: HISTORIAL_PATH=datos/historial_lp.csv
 python bot_lp.py
 ```
 
 Para correrlo sin mandar avisos, no definas `TELEGRAM_BOT_TOKEN` ni `TELEGRAM_CHAT_ID`.
+Para apuntar al CSV del repo privado en local:
+
+```bash
+export HISTORIAL_PATH=../monitor-servicios-lp-datos/historial_lp.csv
+```
 
 ### Recuperar un período perdido
 
@@ -111,8 +122,8 @@ Tipo de nota: `hecho`, `seguimiento_judicial`, `anuncio`, `opinion_politica`.
 Categorías: cortes de luz/agua/gas, accidente vial, robo, homicidio o balacera,
 incendio, temporal o inundación, corte de calle o piquete, u `otro`.
 
-`historial_lp.csv` sigue siendo el registro crudo. El archivo derivado no se
-usa para avisos: reprocesar el historial no manda nada por Telegram.
+El CSV crudo vive en el repo privado (`HISTORIAL_PATH`). El archivo derivado
+no se usa para avisos: reprocesar el historial no manda nada por Telegram.
 
 ```bash
 python enriquecer.py --rehacer
@@ -134,8 +145,8 @@ El GeoJSON público (`docs/eventos.geojson` y la copia en la raíz del repo) y
 con reglas es frágil (calles, barrios, instituciones). El mapa muestra
 categoría, lugar, fecha, gravedad y un enlace «Ver nota en 0221». Fuente:
 [0221 (www.0221.com.ar)](https://www.0221.com.ar). Es un proyecto
-independiente, no afiliado a 0221. El historial crudo (`historial_lp.csv`)
-sigue teniendo los titulares originales.
+independiente, no afiliado a 0221. El historial crudo con los titulares
+está en el repositorio privado, no en este.
 
 La página estática está en `docs/index.html` (Leaflet + Leaflet.heat). Lee
 `./eventos.geojson`, así se actualiza sola cuando el workflow commitea el archivo.

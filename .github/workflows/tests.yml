@@ -3,7 +3,7 @@ name: Tests
 on:
   pull_request:
   push:
-    # Los commits automáticos del bot solo tocan el CSV: no disparan esto.
+    # Los commits automáticos del bot tocan GeoJSON/docs (el CSV vive en el repo privado).
     paths:
       - '**.py'
       - 'requirements.txt'
