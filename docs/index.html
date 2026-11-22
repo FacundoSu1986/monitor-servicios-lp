@@ -48,6 +48,7 @@
     .vacio { color: var(--muted); font-style: italic; }
     .leyenda { margin-top: 1rem; padding-top: 0.7rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.8rem; line-height: 1.4; }
     .aviso { color: var(--accent); font-weight: 600; }
+    header p.sub a, .leyenda a { color: #1d4ed8; }
     .popup h3 { margin: 0 0 0.25rem; font-size: 0.95rem; }
     .popup p { margin: 0.15rem 0; }
     .popup a { color: #1d4ed8; }
@@ -62,7 +63,7 @@
 <body>
   <header>
     <h1>Eventos reportados en Gran La Plata</h1>
-    <p class="sub">A partir de notas de 0221. No es una estadística oficial de delitos ni de servicios.</p>
+    <p class="sub">A partir de notas de <a href="https://www.0221.com.ar" target="_blank" rel="noopener">0221</a>. Proyecto independiente, no afiliado a 0221. No es una estadística oficial de delitos ni de servicios.</p>
   </header>
   <form class="filtros" id="filtros">
     <label>Período
@@ -105,7 +106,7 @@
       <div class="leyenda">
         <p><span class="aviso">Advertencia:</span> este es un mapa de <strong>eventos reportados por medios</strong>, no una estadística oficial de delitos ni de la red de servicios. El casco urbano y los hechos más espectaculares suelen estar sobrerrepresentados.</p>
         <p>Los puntos son solo esquinas o cuadras geocodificadas. Un hecho con precisión de barrio no se dibuja como punto en el centro (eso inventaría zonas calientes). Los eventos sin lugar no se dibujan. Robos y accidentes se muestran también como mapa de calor, pesado por gravedad. Una capa por categoría: no se mezclan en un único calor.</p>
-        <p>Fuente: 0221.com.ar · actualizado con cada corrida del bot.</p>
+        <p>Fuente: <a href="https://www.0221.com.ar" target="_blank" rel="noopener">0221 (www.0221.com.ar)</a>. Proyecto independiente, no afiliado a 0221. Se actualiza con cada corrida del bot.</p>
       </div>
     </aside>
   </div>
@@ -191,15 +192,14 @@
   }
 
   function popup(ev) {
-    const notas = (ev.titulos || []).map((t, i) => {
-      const url = (ev.urls || [])[i];
-      const tit = t || "Nota";
-      return url ? `<li><a href="${url}" target="_blank" rel="noopener">${tit}</a></li>` : `<li>${tit}</li>`;
+    const links = (ev.urls || []).filter(Boolean).map((url, i) => {
+      const etiq = i === 0 ? "Ver nota en 0221" : `Ver nota en 0221 (${i + 1})`;
+      return `<li><a href="${url}" target="_blank" rel="noopener">${etiq}</a></li>`;
     }).join("");
     return `<div class="popup"><h3>${NOMBRES[ev.categoria] || ev.categoria}</h3>
       <p>${ev.lugar_texto || "Sin lugar preciso"} · ${ev.fecha_hecho || ""} · ${ev.gravedad || ""}</p>
       <p>${ev.n_notas} nota${ev.n_notas > 1 ? "s" : ""} · confianza ${ev.confianza || "—"}</p>
-      <ul>${notas}</ul></div>`;
+      ${links ? `<ul>${links}</ul>` : ""}</div>`;
   }
 
   function pintar() {

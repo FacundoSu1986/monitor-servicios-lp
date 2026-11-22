@@ -129,6 +129,14 @@ descarga Overpass (una sola vez; no corre en el bot).
 es `eventos.geojson` (también se copia a `docs/`). Se regenera en cada corrida
 del bot, sin volver a scrapear y sin Telegram.
 
+El GeoJSON público (`docs/eventos.geojson` y la copia en la raíz del repo) y
+`notas_enriquecidas.geojson` no incluyen titulares: detectar nombres propios
+con reglas es frágil (calles, barrios, instituciones). El mapa muestra
+categoría, lugar, fecha, gravedad y un enlace «Ver nota en 0221». Fuente:
+[0221 (www.0221.com.ar)](https://www.0221.com.ar). Es un proyecto
+independiente, no afiliado a 0221. El historial crudo (`historial_lp.csv`)
+sigue teniendo los titulares originales.
+
 La página estática está en `docs/index.html` (Leaflet + Leaflet.heat). Lee
 `./eventos.geojson`, así se actualiza sola cuando el workflow commitea el archivo.
 Una capa por categoría; el calor (pesado por gravedad) es solo para robos y

@@ -245,20 +245,47 @@ def evento_desde_grupo(notas: list[dict], centroides: dict[str, tuple[float, flo
     return props
 
 
-def evento_a_feature(ev: dict) -> dict:
+# Lo que se escribe a disco (repo público y docs/). Sin titulares: detectar
+# nombres propios en español es frágil (choca con calles, barrios, instituciones).
+CAMPOS_PUBLICOS = (
+    "id_evento",
+    "categoria",
+    "gravedad",
+    "fecha_hecho",
+    "lugar_texto",
+    "precision",
+    "lat",
+    "lon",
+    "lat_aprox",
+    "lon_aprox",
+    "urls",
+    "ids_notas",
+    "tipos_nota",
+    "n_notas",
+    "confianza",
+)
+
+
+def evento_para_publicar(ev: dict) -> dict:
+    """Quita titulares y cualquier otro campo que no deba salir en el mapa público."""
+    return {k: ev.get(k) for k in CAMPOS_PUBLICOS}
+
+
+def evento_a_feature(ev: dict, publico: bool = True) -> dict:
     lat, lon = ev.get("lat"), ev.get("lon")
     geom = None
     if ev.get("precision") in {"esquina", "cuadra"} and lat is not None and lon is not None:
         geom = {"type": "Point", "coordinates": [lon, lat]}
-    return {"type": "Feature", "geometry": geom, "properties": ev}
+    props = evento_para_publicar(ev) if publico else dict(ev)
+    return {"type": "Feature", "geometry": geom, "properties": props}
 
 
-def escribir_eventos(path: Path, eventos: list[dict]) -> None:
+def escribir_eventos(path: Path, eventos: list[dict], publico: bool = True) -> None:
     eventos_ord = sorted(eventos, key=lambda e: (e.get("fecha_hecho") or "", e.get("id_evento") or ""))
     data = {
         "type": "FeatureCollection",
         "name": "eventos",
-        "features": [evento_a_feature(e) for e in eventos_ord],
+        "features": [evento_a_feature(e, publico=publico) for e in eventos_ord],
     }
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
