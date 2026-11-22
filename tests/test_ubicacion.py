@@ -118,6 +118,24 @@ class BarrioTests(unittest.TestCase):
         self.assertEqual(r["precision"], "sin_lugar")
         self.assertEqual(r["lugar_texto"], "")
 
+    def test_la_loma(self):
+        r = extraer_lugar("La víctima residía en La Loma y la Justicia condenó a la Municipalidad.")
+        self.assertEqual(r["lugar_texto"], "La Loma")
+        self.assertEqual(r["precision"], "barrio")
+        self.assertIsNone(r["lat"])
+
+    def test_ruta_km_en_el_copete_gana_a_barrio_posterior(self):
+        texto = (
+            "Tragedia en la Ruta 6: una camioneta chocó con un camión.\n"
+            "El grave incidente tuvo lugar alrededor de las 18.25 a la altura del kilómetro 42, "
+            "en las inmediaciones del cruce con la Ruta 53, en un tramo que conecta San Vicente y La Plata.\n\n"
+            "Las víctimas del tránsito en La Plata, Berisso y Ensenada siguen en aumento. "
+            "Julio fue el mes con más fallecimientos registrados en Berisso."
+        )
+        r = extraer_lugar(texto)
+        self.assertEqual(r["lugar_texto"], "Ruta 6 km 42")
+        self.assertEqual(r["precision"], "cuadra")
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -46,6 +46,12 @@ _CAMINO = re.compile(
 )
 _RUTA_KM = re.compile(r"\bruta\s*(\d{1,3})\s*(?:km\.?|kilometro)\s*(\d{1,4})\b", re.I)
 _RUTA = re.compile(r"\bruta\s*(?:provincial\s+|nacional\s+)?(?:n[°ºo]?\s*)?(\d{1,3})\b", re.I)
+_KM_SUELTO = re.compile(r"(?:a la altura del\s+)?(?:km\.?|kil[oó]metro)\s*(\d{1,4})\b", re.I)
+_CORTE_CONTEXTO = re.compile(
+    r"(?:las v[ií]ctimas del tr[aá]nsito en la plata|te puede interesar|"
+    r"noticias relacionadas|otras notas|mir[aá] tambi[eé]n)",
+    re.I,
+)
 _CUADRA_ALTURA = re.compile(
     rf"(?:{_VIA}\s+){_NUM}\s+(?:al|nro\.?|n[°º]|numero)\s*(\d{{1,5}})\b",
     re.I,
@@ -203,8 +209,55 @@ def _geocodificar_cuadra(eje: str, a: str, b: str, texto: str) -> dict[str, floa
     return p1 or p2
 
 
-def extraer_lugar(texto: str) -> dict:
-    """Devuelve lugar_texto, precision, lat, lon (lat/lon solo en esquina o cuadra)."""
+def _lead(texto: str) -> str:
+    """Copete y primeros párrafos (~1600 caracteres), recortando 'más noticias'."""
+    m = _CORTE_CONTEXTO.search(texto)
+    base = texto[: m.start()] if m else texto
+    if len(base) <= 1600:
+        return base
+    cut = base[:1600]
+    nl = cut.rfind("\n")
+    if nl >= 800:
+        return cut[:nl]
+    return cut
+
+
+def _lugar_ruta(plano: str) -> dict | None:
+    """Ruta N km M juntos, o 'Ruta 6' + 'kilómetro 42' a menos de 600 caracteres."""
+    m = _RUTA_KM.search(plano)
+    if m:
+        return {
+            "lugar_texto": f"Ruta {int(m.group(1))} km {int(m.group(2))}",
+            "precision": "cuadra",
+            "lat": None,
+            "lon": None,
+        }
+    rutas = list(_RUTA.finditer(plano))
+    kms = list(_KM_SUELTO.finditer(plano))
+    if rutas and kms:
+        n = int(rutas[0].group(1))
+        anclas = [r for r in rutas if int(r.group(1)) == n] or [rutas[0]]
+        def _dist(k) -> int:
+            return min(abs(k.start() - r.start()) for r in anclas)
+        k0 = min(kms, key=_dist)
+        if _dist(k0) <= 1200:
+            return {
+                "lugar_texto": f"Ruta {n} km {int(k0.group(1))}",
+                "precision": "cuadra",
+                "lat": None,
+                "lon": None,
+            }
+    if rutas:
+        return {
+            "lugar_texto": f"Ruta {int(rutas[0].group(1))}",
+            "precision": "cuadra",
+            "lat": None,
+            "lon": None,
+        }
+    return None
+
+
+def _extraer_en(texto: str, *, ruta_antes_de_barrio: bool = False) -> dict:
     vacio = {"lugar_texto": "", "precision": "sin_lugar", "lat": None, "lon": None}
     if not texto or not texto.strip():
         return vacio
@@ -229,7 +282,6 @@ def extraer_lugar(texto: str) -> dict:
     # 2) esquina: "7 y 50"
     for m in _ESQUINA.finditer(plano):
         raw = m.group(0)
-        # "entre 148 y 148" ya cubierto por cuadra; si aparece aislado y es el mismo número+bis, no es esquina.
         a, b = _num_clave(m.group(1)), _num_clave(m.group(2))
         prefijo = bool(re.search(r"(?:calle|avenida|av\.?|diag)", raw, re.I))
         conocido = bool(_puntos_par(a, b))
@@ -260,10 +312,10 @@ def extraer_lugar(texto: str) -> dict:
             "lon": None,
         }
 
-    # 4) ruta km
-    m = _RUTA_KM.search(plano)
-    if m:
-        return {"lugar_texto": f"Ruta {int(m.group(1))} km {int(m.group(2))}", "precision": "cuadra", "lat": None, "lon": None}
+    # 4) ruta km (juntos o cercanos)
+    ruta = _lugar_ruta(plano)
+    if ruta and (ruta["lugar_texto"].startswith("Ruta ") and " km " in ruta["lugar_texto"]):
+        return ruta
 
     # 5) camino / diagonal / avenida sueltos (sin coordenada)
     m = _CAMINO.search(plano)
@@ -274,17 +326,37 @@ def extraer_lugar(texto: str) -> dict:
     if m:
         return {"lugar_texto": f"Diagonal {int(m.group(1))}", "precision": "cuadra", "lat": None, "lon": None}
 
+    if ruta_antes_de_barrio and ruta:
+        return ruta
+
     # 6) barrio / localidad (sin lat/lon: no se pinta como punto)
     barrios = buscar_barrios(texto)
     if barrios:
         b = barrios[0]
         return {"lugar_texto": b["nombre"], "precision": b["tipo"], "lat": None, "lon": None}
 
-    m = _RUTA.search(plano)
-    if m:
-        return {"lugar_texto": f"Ruta {int(m.group(1))}", "precision": "cuadra", "lat": None, "lon": None}
+    if ruta:
+        return ruta
     m = _AVENIDA.search(plano)
     if m and _num_ok(m.group(1), estricto=False):
         return {"lugar_texto": f"Avenida {int(m.group(1))}", "precision": "cuadra", "lat": None, "lon": None}
 
     return vacio
+
+
+def extraer_lugar(texto: str) -> dict:
+    """Devuelve lugar_texto, precision, lat, lon (lat/lon solo en esquina o cuadra).
+
+    Prioriza el copete y los primeros párrafos (ruta/km incluidos) frente a
+    menciones de contexto más abajo en la nota.
+    """
+    vacio = {"lugar_texto": "", "precision": "sin_lugar", "lat": None, "lon": None}
+    if not texto or not texto.strip():
+        return vacio
+    lead = _lead(texto)
+    hallado = _extraer_en(lead, ruta_antes_de_barrio=True)
+    if hallado["precision"] != "sin_lugar":
+        return hallado
+    if lead.strip() == texto.strip():
+        return hallado
+    return _extraer_en(texto, ruta_antes_de_barrio=False)

@@ -1,24 +1,335 @@
 {
-  "casco_urbano": {"nombre": "Casco urbano", "tipo": "barrio", "lat": -34.921, "lon": -57.954, "aliases": ["casco urbano", "casco platense", "centro platense", "pleno centro", "el centro de la plata", "en el centro"]},
-  "tolosa": {"nombre": "Tolosa", "tipo": "localidad", "lat": -34.894, "lon": -57.964, "aliases": ["tolosa"]},
-  "ringuelet": {"nombre": "Ringuelet", "tipo": "localidad", "lat": -34.883, "lon": -57.991, "aliases": ["ringuelet"]},
-  "gonnet": {"nombre": "Gonnet", "tipo": "localidad", "lat": -34.879, "lon": -58.017, "aliases": ["gonnet", "manuel b. gonnet", "manuel b gonnet"]},
-  "city_bell": {"nombre": "City Bell", "tipo": "localidad", "lat": -34.863, "lon": -58.047, "aliases": ["city bell"]},
-  "villa_elisa": {"nombre": "Villa Elisa", "tipo": "localidad", "lat": -34.853, "lon": -58.079, "aliases": ["villa elisa"]},
-  "los_hornos": {"nombre": "Los Hornos", "tipo": "localidad", "lat": -34.951, "lon": -57.978, "aliases": ["los hornos"]},
-  "melchor_romero": {"nombre": "Melchor Romero", "tipo": "localidad", "lat": -34.980, "lon": -58.016, "aliases": ["melchor romero", "romero"]},
-  "abasto": {"nombre": "Abasto", "tipo": "localidad", "lat": -35.011, "lon": -58.001, "aliases": ["abasto"]},
-  "villa_elvira": {"nombre": "Villa Elvira", "tipo": "localidad", "lat": -34.930, "lon": -57.920, "aliases": ["villa elvira"]},
-  "altos_de_san_lorenzo": {"nombre": "Altos de San Lorenzo", "tipo": "localidad", "lat": -34.965, "lon": -57.930, "aliases": ["altos de san lorenzo"]},
-  "san_carlos": {"nombre": "San Carlos", "tipo": "localidad", "lat": -34.944, "lon": -57.965, "aliases": ["san carlos"]},
-  "olmos": {"nombre": "Lisandro Olmos", "tipo": "localidad", "lat": -34.996, "lon": -58.045, "aliases": ["lisandro olmos", "olmos"]},
-  "arturo_segui": {"nombre": "Arturo Seguí", "tipo": "localidad", "lat": -34.878, "lon": -58.125, "aliases": ["arturo seguí", "arturo segui"]},
-  "hernandez": {"nombre": "José Hernández", "tipo": "localidad", "lat": -34.899, "lon": -58.048, "aliases": ["josé hernández", "jose hernandez", "hernández", "hernandez"]},
-  "gorina": {"nombre": "Gorina", "tipo": "localidad", "lat": -34.902, "lon": -58.037, "aliases": ["gorina"]},
-  "etcheverry": {"nombre": "Etcheverry", "tipo": "localidad", "lat": -34.929, "lon": -58.154, "aliases": ["etcheverry"]},
-  "el_pato": {"nombre": "El Pato", "tipo": "localidad", "lat": -34.878, "lon": -58.180, "aliases": ["el pato"]},
-  "berisso": {"nombre": "Berisso", "tipo": "localidad", "lat": -34.873, "lon": -57.886, "aliases": ["berisso"]},
-  "ensenada": {"nombre": "Ensenada", "tipo": "localidad", "lat": -34.795, "lon": -57.946, "aliases": ["ensenada"]},
-  "punta_lara": {"nombre": "Punta Lara", "tipo": "localidad", "lat": -34.812, "lon": -57.990, "aliases": ["punta lara"]},
-  "meridiano_v": {"nombre": "Meridiano V", "tipo": "barrio", "lat": -34.927, "lon": -57.965, "aliases": ["meridiano v", "meridiano 5"]}
+  "casco_urbano": {
+    "nombre": "Casco urbano",
+    "tipo": "barrio",
+    "lat": -34.921,
+    "lon": -57.954,
+    "aliases": [
+      "casco urbano",
+      "casco platense",
+      "centro platense",
+      "pleno centro",
+      "el centro de la plata",
+      "en el centro"
+    ]
+  },
+  "tolosa": {
+    "nombre": "Tolosa",
+    "tipo": "localidad",
+    "lat": -34.894,
+    "lon": -57.964,
+    "aliases": [
+      "tolosa"
+    ]
+  },
+  "ringuelet": {
+    "nombre": "Ringuelet",
+    "tipo": "localidad",
+    "lat": -34.883,
+    "lon": -57.991,
+    "aliases": [
+      "ringuelet"
+    ]
+  },
+  "gonnet": {
+    "nombre": "Gonnet",
+    "tipo": "localidad",
+    "lat": -34.879,
+    "lon": -58.017,
+    "aliases": [
+      "gonnet",
+      "manuel b. gonnet",
+      "manuel b gonnet"
+    ]
+  },
+  "city_bell": {
+    "nombre": "City Bell",
+    "tipo": "localidad",
+    "lat": -34.863,
+    "lon": -58.047,
+    "aliases": [
+      "city bell"
+    ]
+  },
+  "villa_elisa": {
+    "nombre": "Villa Elisa",
+    "tipo": "localidad",
+    "lat": -34.853,
+    "lon": -58.079,
+    "aliases": [
+      "villa elisa"
+    ]
+  },
+  "los_hornos": {
+    "nombre": "Los Hornos",
+    "tipo": "localidad",
+    "lat": -34.951,
+    "lon": -57.978,
+    "aliases": [
+      "los hornos"
+    ]
+  },
+  "melchor_romero": {
+    "nombre": "Melchor Romero",
+    "tipo": "localidad",
+    "lat": -34.98,
+    "lon": -58.016,
+    "aliases": [
+      "melchor romero",
+      "romero"
+    ]
+  },
+  "abasto": {
+    "nombre": "Abasto",
+    "tipo": "localidad",
+    "lat": -35.011,
+    "lon": -58.001,
+    "aliases": [
+      "abasto"
+    ]
+  },
+  "villa_elvira": {
+    "nombre": "Villa Elvira",
+    "tipo": "localidad",
+    "lat": -34.93,
+    "lon": -57.92,
+    "aliases": [
+      "villa elvira"
+    ]
+  },
+  "altos_de_san_lorenzo": {
+    "nombre": "Altos de San Lorenzo",
+    "tipo": "localidad",
+    "lat": -34.965,
+    "lon": -57.93,
+    "aliases": [
+      "altos de san lorenzo"
+    ]
+  },
+  "san_carlos": {
+    "nombre": "San Carlos",
+    "tipo": "localidad",
+    "lat": -34.944,
+    "lon": -57.965,
+    "aliases": [
+      "san carlos"
+    ]
+  },
+  "olmos": {
+    "nombre": "Lisandro Olmos",
+    "tipo": "localidad",
+    "lat": -34.996,
+    "lon": -58.045,
+    "aliases": [
+      "lisandro olmos",
+      "olmos"
+    ]
+  },
+  "arturo_segui": {
+    "nombre": "Arturo Seguí",
+    "tipo": "localidad",
+    "lat": -34.878,
+    "lon": -58.125,
+    "aliases": [
+      "arturo seguí",
+      "arturo segui"
+    ]
+  },
+  "hernandez": {
+    "nombre": "José Hernández",
+    "tipo": "localidad",
+    "lat": -34.899,
+    "lon": -58.048,
+    "aliases": [
+      "josé hernández",
+      "jose hernandez",
+      "hernández",
+      "hernandez"
+    ]
+  },
+  "gorina": {
+    "nombre": "Gorina",
+    "tipo": "localidad",
+    "lat": -34.902,
+    "lon": -58.037,
+    "aliases": [
+      "gorina"
+    ]
+  },
+  "etcheverry": {
+    "nombre": "Etcheverry",
+    "tipo": "localidad",
+    "lat": -34.929,
+    "lon": -58.154,
+    "aliases": [
+      "etcheverry"
+    ]
+  },
+  "el_pato": {
+    "nombre": "El Pato",
+    "tipo": "localidad",
+    "lat": -34.878,
+    "lon": -58.18,
+    "aliases": [
+      "el pato"
+    ]
+  },
+  "berisso": {
+    "nombre": "Berisso",
+    "tipo": "localidad",
+    "lat": -34.873,
+    "lon": -57.886,
+    "aliases": [
+      "berisso"
+    ]
+  },
+  "ensenada": {
+    "nombre": "Ensenada",
+    "tipo": "localidad",
+    "lat": -34.795,
+    "lon": -57.946,
+    "aliases": [
+      "ensenada"
+    ]
+  },
+  "punta_lara": {
+    "nombre": "Punta Lara",
+    "tipo": "localidad",
+    "lat": -34.812,
+    "lon": -57.99,
+    "aliases": [
+      "punta lara"
+    ]
+  },
+  "meridiano_v": {
+    "nombre": "Meridiano V",
+    "tipo": "barrio",
+    "lat": -34.927,
+    "lon": -57.965,
+    "aliases": [
+      "meridiano v",
+      "meridiano 5"
+    ]
+  },
+  "la_loma": {
+    "nombre": "La Loma",
+    "tipo": "barrio",
+    "lat": -34.9113,
+    "lon": -57.9691,
+    "aliases": [
+      "la loma"
+    ]
+  },
+  "barrio_aeropuerto": {
+    "nombre": "Barrio Aeropuerto",
+    "tipo": "barrio",
+    "lat": -34.9604,
+    "lon": -57.8991,
+    "aliases": [
+      "barrio aeropuerto"
+    ]
+  },
+  "barrio_hipodromo": {
+    "nombre": "Barrio Hipódromo",
+    "tipo": "barrio",
+    "lat": -34.8972,
+    "lon": -57.9521,
+    "aliases": [
+      "barrio hipódromo",
+      "barrio hipodromo"
+    ]
+  },
+  "villa_montoro": {
+    "nombre": "Villa Montoro",
+    "tipo": "barrio",
+    "lat": -34.9434,
+    "lon": -57.8984,
+    "aliases": [
+      "villa montoro"
+    ]
+  },
+  "parque_sicardi": {
+    "nombre": "Parque Sicardi",
+    "tipo": "localidad",
+    "lat": -34.9859,
+    "lon": -57.8575,
+    "aliases": [
+      "parque sicardi",
+      "villa parque sicardi"
+    ]
+  },
+  "ignacio_correas": {
+    "nombre": "Ignacio Correas",
+    "tipo": "localidad",
+    "lat": -35.0341,
+    "lon": -57.8441,
+    "aliases": [
+      "ignacio correas"
+    ]
+  },
+  "rufino_de_elizalde": {
+    "nombre": "Rufino de Elizalde",
+    "tipo": "barrio",
+    "lat": -34.9569,
+    "lon": -57.942,
+    "aliases": [
+      "rufino de elizalde"
+    ]
+  },
+  "villa_garibaldi": {
+    "nombre": "Villa Garibaldi",
+    "tipo": "localidad",
+    "lat": -35.0,
+    "lon": -57.85,
+    "aliases": [
+      "villa garibaldi"
+    ]
+  },
+  "los_portenos": {
+    "nombre": "Los Porteños",
+    "tipo": "barrio",
+    "lat": -34.9134,
+    "lon": -58.0798,
+    "aliases": [
+      "los porteños",
+      "los portenos"
+    ]
+  },
+  "villa_arguello": {
+    "nombre": "Villa Argüello",
+    "tipo": "barrio",
+    "lat": -34.9091,
+    "lon": -57.9202,
+    "aliases": [
+      "villa argüello",
+      "villa arguello"
+    ]
+  },
+  "colonia_urquiza": {
+    "nombre": "Colonia Urquiza",
+    "tipo": "localidad",
+    "lat": -34.9402,
+    "lon": -58.0943,
+    "aliases": [
+      "colonia urquiza"
+    ]
+  },
+  "las_quintas": {
+    "nombre": "Las Quintas",
+    "tipo": "barrio",
+    "lat": -34.9252,
+    "lon": -58.0219,
+    "aliases": [
+      "las quintas"
+    ]
+  },
+  "el_retiro": {
+    "nombre": "El Retiro",
+    "tipo": "barrio",
+    "lat": -34.9477,
+    "lon": -57.9949,
+    "aliases": [
+      "el retiro"
+    ]
+  }
 }
