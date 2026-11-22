@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Enriquece notas de 0221 (cuerpo, lugar, clasificación) y escribe un GeoJSON derivado.
 
-No manda avisos por Telegram. `historial_lp.csv` queda como registro crudo.
+No manda avisos por Telegram. El CSV crudo vive en el repo privado (HISTORIAL_PATH).
 
   python enriquecer.py
   python enriquecer.py --dry-run
@@ -23,7 +23,7 @@ from bs4 import BeautifulSoup
 
 from backfill import extraer_articulo
 from bot_lp import (
-    ARCHIVO,
+    ruta_historial,
     FORMATO_FECHA,
     TIMEOUT,
     TZ,
@@ -268,7 +268,7 @@ def filas_con_url(path: Path) -> list[dict[str, str]]:
 def main(argv: list[str] | None = None) -> int:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
     p = argparse.ArgumentParser(description="Reprocesa el historial (solo filas con URL) y escribe el GeoJSON.")
-    p.add_argument("--historial", default=str(ARCHIVO))
+    p.add_argument("--historial", default=None, help="CSV del historial (default: HISTORIAL_PATH o historial_lp.csv)")
     p.add_argument("--salida", default=str(SALIDA))
     p.add_argument("--delay", type=float, default=1.0)
     p.add_argument("--rehacer", action="store_true", help="Ignora el GeoJSON previo y vuelve a procesar (usa caché si hay)")
@@ -276,7 +276,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--dry-run", action="store_true")
     args = p.parse_args(argv)
 
-    filas = filas_con_url(Path(args.historial))
+    filas = filas_con_url(Path(args.historial) if args.historial else ruta_historial())
     logging.info("Filas con URL: %s", len(filas))
     notas = enriquecer_filas(
         filas,

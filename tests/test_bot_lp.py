@@ -90,6 +90,16 @@ class HistorialTests(unittest.TestCase):
         self.assertEqual(len(nuevos), 1)
         self.assertIn("chocó", nuevos[0]["evento"])
 
+    def test_ruta_historial_usa_env(self):
+        with patch.dict(os.environ, {"HISTORIAL_PATH": "/tmp/datos/historial_lp.csv"}):
+            self.assertEqual(bot_lp.ruta_historial(), Path("/tmp/datos/historial_lp.csv"))
+
+    def test_ruta_historial_default_es_archivo(self):
+        env = {k: v for k, v in os.environ.items() if k != "HISTORIAL_PATH"}
+        with patch.dict(os.environ, env, clear=True):
+            self.assertEqual(bot_lp.ruta_historial(), bot_lp.ARCHIVO)
+            self.assertEqual(bot_lp.ruta_historial(), Path("historial_lp.csv"))
+
 
 ENV_TG = {"TELEGRAM_BOT_TOKEN": "tok-test", "TELEGRAM_CHAT_ID": "12345"}
 

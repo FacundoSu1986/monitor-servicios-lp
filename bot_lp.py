@@ -38,7 +38,16 @@ URL_SITEMAP_NEWS = f"{BASE_URL}/sitemap-news.xml"
 SECCIONES = ("la-plata", "policiales", "berisso", "ensenada")
 # Notas del sitemap publicadas antes de esto no se consideran nuevas.
 VENTANA_SITEMAP = timedelta(days=3)
+# Default local; en Actions se pisa con HISTORIAL_PATH (CSV en el repo privado).
 ARCHIVO = Path("historial_lp.csv")
+
+
+def ruta_historial() -> Path:
+    """Ruta del CSV crudo. HISTORIAL_PATH manda; si no, ARCHIVO (los tests lo parchean)."""
+    env = (os.environ.get("HISTORIAL_PATH") or "").strip()
+    if env:
+        return Path(env)
+    return ARCHIVO
 CAMPOS = ["fecha", "evento", "url", "palabras"]
 FORMATO_FECHA = "%Y-%m-%d %H:%M"
 TIMEOUT = 30
@@ -515,11 +524,12 @@ def scraping_la_plata(ahora: datetime | None = None) -> int:
         ahora = ahora or datetime.now(TZ)
         sesion = crear_sesion()
         hallazgos, fallas = recolectar(sesion, ahora)
-        titulos_previos, claves_previas = leer_historial(ARCHIVO)
+        historial = ruta_historial()
+        titulos_previos, claves_previas = leer_historial(historial)
         nuevos = nuevos_eventos(hallazgos, titulos_previos, claves_previas)
 
         if nuevos:
-            guardar_nuevos(ARCHIVO, nuevos)
+            guardar_nuevos(historial, nuevos)
             logging.info("Guardados %s eventos nuevos (de %s coincidencias).", len(nuevos), len(hallazgos))
             for fila in nuevos:
                 logging.info(" + %s | %s", fila["fecha"], fila["evento"])
