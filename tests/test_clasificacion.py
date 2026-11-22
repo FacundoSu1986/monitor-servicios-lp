@@ -99,5 +99,37 @@ class EnriquecerSinRedTests(unittest.TestCase):
         self.assertFalse(nota["fecha_hecho_es_publicacion"])
 
 
+class IncendioTests(unittest.TestCase):
+    def test_incendio_local(self):
+        r = clasificar("Un incendio destruyó por completo una vivienda precaria en Abasto", "")
+        self.assertEqual(r["categoria"], "incendio")
+
+    def test_no_incendio_patagonia(self):
+        r = clasificar("Helicópteros de La Plata ayudan a combatir el fuego en la Patagonia", "")
+        self.assertNotEqual(r["categoria"], "incendio")
+
+    def test_no_incendio_netflix(self):
+        r = clasificar("Explosiones, peleas e incendio de autos: así será la filmación de Netflix", "")
+        self.assertNotEqual(r["categoria"], "incendio")
+
+    def test_choque_con_incendio_es_accidente(self):
+        r = clasificar("Murió el motociclista tras un violento choque con incendio en Camino Centenario", "")
+        self.assertEqual(r["categoria"], "accidente_vial")
+
+    def test_apagon_tras_incendio_es_corte_luz(self):
+        r = clasificar("Más del 60% de los afectados ya recuperó la luz tras el incendio en Tolosa", "")
+        self.assertEqual(r["categoria"], "corte_luz")
+
+    def test_incendio_fue_un_accidente_no_es_vial(self):
+        r = clasificar("Confirman que el incendio en la subestación Tolosa de Edelap fue un accidente", "")
+        self.assertEqual(r["categoria"], "corte_luz")
+
+
+    def test_servicio_de_luz_tras_incendio_es_corte_luz(self):
+        r = clasificar("Instalarán una subestación móvil en La Plata para normalizar el servicio de luz en los barrios",
+                       "Luego del incendio en la Estación Transformadora de Tolosa, Edelap instalará una subestación móvil.")
+        self.assertEqual(r["categoria"], "corte_luz")
+
+
 if __name__ == "__main__":
     unittest.main()

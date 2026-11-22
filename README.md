@@ -121,6 +121,26 @@ python enriquecer.py --rehacer
 `scripts/build_intersecciones.py` regenera el JSON de cruces a partir de una
 descarga Overpass (una sola vez; no corre en el bot).
 
+
+## Mapa de eventos
+
+`eventos.py` agrupa las notas de `notas_enriquecidas.geojson` en hechos
+(misma categoría, lugar a ≤300 m o mismo barrio, y menos de 48 h). El resultado
+es `eventos.geojson` (también se copia a `docs/`). Se regenera en cada corrida
+del bot, sin volver a scrapear y sin Telegram.
+
+La página estática está en `docs/index.html` (Leaflet + Leaflet.heat). Lee
+`./eventos.geojson`, así se actualiza sola cuando el workflow commitea el archivo.
+Una capa por categoría; el calor (pesado por gravedad) es solo para robos y
+accidentes, nunca un único mapa mezclado. Los puntos son esquinas o cuadras;
+los barrios van como mancha suave y en un listado; los `sin_lugar` no se dibujan.
+
+```bash
+python enriquecer.py --rehacer --cache-dir /tmp/enriquecer_cache
+python eventos.py
+python -m http.server 8000 --directory docs
+```
+
 ## Tests
 
 ```bash

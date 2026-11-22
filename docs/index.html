@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mapa de eventos reportados en Gran La Plata</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --ink: #1c1917;
+      --muted: #57534e;
+      --card: #fffcf7;
+      --line: #d6d3d1;
+      --accent: #9a3412;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; font-family: "Source Sans 3", "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--ink); }
+    header {
+      padding: 0.7rem 1rem 0.5rem;
+      border-bottom: 1px solid var(--line);
+      background: var(--card);
+    }
+    header h1 { font-size: 1.15rem; margin: 0 0 0.15rem; font-weight: 700; }
+    header p.sub { margin: 0; font-size: 0.85rem; color: var(--muted); }
+    .filtros {
+      display: flex; flex-wrap: wrap; gap: 0.45rem 0.8rem; align-items: center;
+      padding: 0.55rem 1rem; background: var(--card); border-bottom: 1px solid var(--line);
+      font-size: 0.85rem;
+    }
+    .filtros label { color: var(--muted); }
+    .filtros select, .filtros input[type="date"] {
+      border: 1px solid var(--line); border-radius: 6px; padding: 0.2rem 0.4rem; background: #fff;
+    }
+    .capas { display: flex; flex-wrap: wrap; gap: 0.35rem 0.7rem; }
+    .capas label { display: inline-flex; align-items: center; gap: 0.25rem; cursor: pointer; color: var(--ink); }
+    .swatch { width: 0.7rem; height: 0.7rem; border-radius: 50%; display: inline-block; }
+    .layout { display: grid; grid-template-columns: 1fr 280px; height: calc(100% - 7.5rem); }
+    #mapa { width: 100%; height: 100%; background: #e7e5e4; }
+    aside {
+      overflow: auto; background: var(--card); border-left: 1px solid var(--line);
+      padding: 0.8rem 0.9rem 1.2rem; font-size: 0.84rem;
+    }
+    aside h2 { font-size: 0.95rem; margin: 0.8rem 0 0.35rem; }
+    aside h2:first-child { margin-top: 0; }
+    aside ol, aside ul { margin: 0; padding-left: 1.15rem; }
+    aside li { margin: 0.2rem 0; }
+    .vacio { color: var(--muted); font-style: italic; }
+    .leyenda { margin-top: 1rem; padding-top: 0.7rem; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.8rem; line-height: 1.4; }
+    .aviso { color: var(--accent); font-weight: 600; }
+    .popup h3 { margin: 0 0 0.25rem; font-size: 0.95rem; }
+    .popup p { margin: 0.15rem 0; }
+    .popup a { color: #1d4ed8; }
+    .popup ul { margin: 0.3rem 0 0; padding-left: 1.1rem; }
+    @media (max-width: 800px) {
+      .layout { grid-template-columns: 1fr; grid-template-rows: 58vh 1fr; height: auto; min-height: calc(100% - 9rem); }
+      aside { border-left: 0; border-top: 1px solid var(--line); }
+      header h1 { font-size: 1.05rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Eventos reportados en Gran La Plata</h1>
+    <p class="sub">A partir de notas de 0221. No es una estadística oficial de delitos ni de servicios.</p>
+  </header>
+  <form class="filtros" id="filtros">
+    <label>Período
+      <select id="periodo">
+        <option value="7">últimos 7 días</option>
+        <option value="30" selected>últimos 30 días</option>
+        <option value="90">últimos 90 días</option>
+        <option value="todo">todo el historial</option>
+        <option value="rango">rango de fechas…</option>
+      </select>
+    </label>
+    <label class="rango" hidden>Desde <input type="date" id="desde"></label>
+    <label class="rango" hidden>Hasta <input type="date" id="hasta"></label>
+    <label>Día
+      <select id="dia">
+        <option value="todos">todos</option>
+        <option value="semana">lunes a viernes</option>
+        <option value="finde">fin de semana</option>
+      </select>
+    </label>
+    <label>Tipo de nota
+      <select id="tipo">
+        <option value="mapa" selected>hechos (y anuncios de cortes)</option>
+        <option value="hecho">solo hechos</option>
+        <option value="anuncio">solo anuncios</option>
+        <option value="todas">todas (incluye juicios y opinión)</option>
+      </select>
+    </label>
+    <div class="capas" id="capas" aria-label="Capas por categoría"></div>
+  </form>
+  <div class="layout">
+    <div id="mapa" role="application" aria-label="Mapa de eventos"></div>
+    <aside>
+      <h2>Esquinas negras</h2>
+      <p class="vacio" id="sin-esquinas">Accidentes en esquinas o cuadras, según el filtro.</p>
+      <ol id="esquinas"></ol>
+      <h2>Por barrio o localidad</h2>
+      <p class="vacio" id="sin-barrios">Eventos sin coordenada precisa, agrupados por lugar.</p>
+      <ul id="barrios"></ul>
+      <div class="leyenda">
+        <p><span class="aviso">Advertencia:</span> este es un mapa de <strong>eventos reportados por medios</strong>, no una estadística oficial de delitos ni de la red de servicios. El casco urbano y los hechos más espectaculares suelen estar sobrerrepresentados.</p>
+        <p>Los puntos son solo esquinas o cuadras geocodificadas. Un hecho con precisión de barrio no se dibuja como punto en el centro (eso inventaría zonas calientes). Los eventos sin lugar no se dibujan. Robos y accidentes se muestran también como mapa de calor, pesado por gravedad. Una capa por categoría: no se mezclan en un único calor.</p>
+        <p>Fuente: 0221.com.ar · actualizado con cada corrida del bot.</p>
+      </div>
+    </aside>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+  <script>
+  const COLORES = {
+    accidente_vial: "#b91c1c",
+    robo: "#6d28d9",
+    homicidio_balacera: "#111827",
+    incendio: "#ea580c",
+    corte_luz: "#ca8a04",
+    corte_agua: "#0369a1",
+    corte_gas: "#a16207",
+    temporal_inundacion: "#0f766e",
+    corte_calle_piquete: "#57534e",
+    otro: "#78716c",
+  };
+  const NOMBRES = {
+    accidente_vial: "Accidente vial",
+    robo: "Robo",
+    homicidio_balacera: "Homicidio / balacera",
+    incendio: "Incendio",
+    corte_luz: "Corte de luz",
+    corte_agua: "Corte de agua",
+    corte_gas: "Corte de gas",
+    temporal_inundacion: "Temporal / inundación",
+    corte_calle_piquete: "Corte de calle / piquete",
+    otro: "Otro",
+  };
+  const PESO = { fatal: 1, alta: 0.9, arma_o_entradera: 0.9, heridos: 0.6, media: 0.55, amplio: 0.55, motochorro: 0.45, danos: 0.3, hurto: 0.3, puntual: 0.25, baja: 0.2 };
+  const HEAT_CATS = new Set(["accidente_vial", "robo"]);
+
+  const $ = (id) => document.getElementById(id);
+  const mapa = L.map("mapa").setView([-34.921, -57.954], 12);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 18,
+    attribution: "&copy; OpenStreetMap",
+  }).addTo(mapa);
+
+  const capasGrupo = {};
+  const heatGrupo = {};
+  const barrioGrupo = L.layerGroup().addTo(mapa);
+  let eventos = [];
+  let activas = new Set(Object.keys(COLORES));
+
+  function parseFecha(s) {
+    if (!s) return null;
+    const d = new Date(s.replace(" ", "T") + "-03:00");
+    return isNaN(d) ? null : d;
+  }
+
+  function enFiltro(ev) {
+    const tipos = ev.tipos_nota || [];
+    const tipo = $("tipo").value;
+    if (tipo === "mapa") {
+      const hecho = tipos.includes("hecho");
+      const anuncioCorte = tipos.includes("anuncio") && String(ev.categoria || "").startsWith("corte_");
+      if (!hecho && !anuncioCorte) return false;
+    } else if (tipo !== "todas" && !tipos.includes(tipo)) {
+      return false;
+    }
+    const dt = parseFecha(ev.fecha_hecho);
+    if (!dt) return false;
+    const per = $("periodo").value;
+    const hoy = new Date();
+    if (per === "7" || per === "30" || per === "90") {
+      const desde = new Date(hoy.getTime() - Number(per) * 86400000);
+      if (dt < desde) return false;
+    } else if (per === "rango") {
+      const d = $("desde").value ? new Date($("desde").value + "T00:00:00-03:00") : null;
+      const h = $("hasta").value ? new Date($("hasta").value + "T23:59:59-03:00") : null;
+      if (d && dt < d) return false;
+      if (h && dt > h) return false;
+    }
+    const dia = $("dia").value;
+    const wd = dt.getDay();
+    if (dia === "semana" && (wd === 0 || wd === 6)) return false;
+    if (dia === "finde" && wd !== 0 && wd !== 6) return false;
+    if (!activas.has(ev.categoria)) return false;
+    return true;
+  }
+
+  function popup(ev) {
+    const notas = (ev.titulos || []).map((t, i) => {
+      const url = (ev.urls || [])[i];
+      const tit = t || "Nota";
+      return url ? `<li><a href="${url}" target="_blank" rel="noopener">${tit}</a></li>` : `<li>${tit}</li>`;
+    }).join("");
+    return `<div class="popup"><h3>${NOMBRES[ev.categoria] || ev.categoria}</h3>
+      <p>${ev.lugar_texto || "Sin lugar preciso"} · ${ev.fecha_hecho || ""} · ${ev.gravedad || ""}</p>
+      <p>${ev.n_notas} nota${ev.n_notas > 1 ? "s" : ""} · confianza ${ev.confianza || "—"}</p>
+      <ul>${notas}</ul></div>`;
+  }
+
+  function pintar() {
+    Object.values(capasGrupo).forEach((g) => g.clearLayers());
+    Object.values(heatGrupo).forEach((h) => h.setLatLngs([]));
+    barrioGrupo.clearLayers();
+
+    const visibles = eventos.filter(enFiltro);
+    const heatPts = {};
+    HEAT_CATS.forEach((c) => { heatPts[c] = []; });
+
+    const esquinas = {};
+    const barrios = {};
+
+    visibles.forEach((ev) => {
+      const cat = ev.categoria;
+      const prec = ev.precision;
+      if ((prec === "esquina" || prec === "cuadra") && ev.lat != null && ev.lon != null) {
+        const g = capasGrupo[cat];
+        if (g) {
+          const m = L.circleMarker([ev.lat, ev.lon], {
+            radius: prec === "esquina" ? 6 : 5,
+            color: "#fff",
+            weight: 1,
+            fillColor: COLORES[cat] || "#78716c",
+            fillOpacity: 0.9,
+          }).bindPopup(popup(ev), { maxWidth: 320 });
+          g.addLayer(m);
+        }
+        if (HEAT_CATS.has(cat)) {
+          heatPts[cat].push([ev.lat, ev.lon, PESO[ev.gravedad] || 0.4]);
+        }
+        if (cat === "accidente_vial") {
+          const clave = ev.lugar_texto || `${ev.lat.toFixed(4)},${ev.lon.toFixed(4)}`;
+          esquinas[clave] = (esquinas[clave] || 0) + 1;
+        }
+      } else if ((prec === "barrio" || prec === "localidad") && ev.lat_aprox != null && ev.lon_aprox != null) {
+        L.circle([ev.lat_aprox, ev.lon_aprox], {
+          radius: prec === "localidad" ? 900 : 500,
+          color: COLORES[cat] || "#78716c",
+          weight: 1,
+          fillColor: COLORES[cat] || "#78716c",
+          fillOpacity: 0.08,
+        }).bindPopup(popup(ev), { maxWidth: 320 }).addTo(barrioGrupo);
+      }
+      if (prec === "barrio" || prec === "localidad") {
+        const k = ev.lugar_texto || "Sin nombre";
+        barrios[k] = (barrios[k] || 0) + 1;
+      }
+    });
+
+    Object.entries(heatPts).forEach(([cat, pts]) => {
+      if (heatGrupo[cat]) heatGrupo[cat].setLatLngs(pts);
+    });
+
+    const ol = $("esquinas");
+    ol.innerHTML = "";
+    const top = Object.entries(esquinas).sort((a, b) => b[1] - a[1]).slice(0, 10);
+    $("sin-esquinas").hidden = top.length > 0;
+    top.forEach(([lugar, n]) => {
+      const li = document.createElement("li");
+      li.textContent = `${lugar} (${n})`;
+      ol.appendChild(li);
+    });
+    const ul = $("barrios");
+    ul.innerHTML = "";
+    const btop = Object.entries(barrios).sort((a, b) => b[1] - a[1]);
+    $("sin-barrios").hidden = btop.length > 0;
+    btop.forEach(([lugar, n]) => {
+      const li = document.createElement("li");
+      li.textContent = `${lugar}: ${n}`;
+      ul.appendChild(li);
+    });
+  }
+
+  function armarCapas() {
+    const box = $("capas");
+    Object.keys(COLORES).forEach((cat) => {
+      capasGrupo[cat] = L.layerGroup().addTo(mapa);
+      if (HEAT_CATS.has(cat)) {
+        heatGrupo[cat] = L.heatLayer([], { radius: 22, blur: 18, maxZoom: 16, minOpacity: 0.25 }).addTo(mapa);
+      }
+      const lab = document.createElement("label");
+      lab.innerHTML = `<input type="checkbox" checked data-cat="${cat}"><span class="swatch" style="background:${COLORES[cat]}"></span>${NOMBRES[cat]}`;
+      lab.querySelector("input").addEventListener("change", (e) => {
+        if (e.target.checked) {
+          activas.add(cat);
+          mapa.addLayer(capasGrupo[cat]);
+          if (heatGrupo[cat]) mapa.addLayer(heatGrupo[cat]);
+        } else {
+          activas.delete(cat);
+          mapa.removeLayer(capasGrupo[cat]);
+          if (heatGrupo[cat]) mapa.removeLayer(heatGrupo[cat]);
+        }
+        pintar();
+      });
+      box.appendChild(lab);
+    });
+  }
+
+  $("periodo").addEventListener("change", () => {
+    const show = $("periodo").value === "rango";
+    document.querySelectorAll(".rango").forEach((el) => { el.hidden = !show; });
+    pintar();
+  });
+  ["dia", "tipo", "desde", "hasta"].forEach((id) => $(id).addEventListener("change", pintar));
+
+  const params = new URLSearchParams(location.search);
+  if (params.get("periodo") && ["7","30","90","todo","rango"].includes(params.get("periodo"))) {
+    $("periodo").value = params.get("periodo");
+    document.querySelectorAll(".rango").forEach((el) => { el.hidden = $("periodo").value !== "rango"; });
+  }
+  if (params.get("tipo")) $("tipo").value = params.get("tipo");
+  if (params.get("dia")) $("dia").value = params.get("dia");
+  armarCapas();
+  fetch("./eventos.geojson")
+    .then((r) => {
+      if (!r.ok) throw new Error("No se pudo leer eventos.geojson");
+      return r.json();
+    })
+    .then((data) => {
+      eventos = (data.features || []).map((f) => f.properties || {});
+      const elegido = new URLSearchParams(location.search).get("periodo");
+      if (!elegido) {
+        const periodoActual = $("periodo").value;
+        const hay = eventos.some(enFiltro);
+        if (!hay) $("periodo").value = "todo";
+        else $("periodo").value = periodoActual;
+      }
+      pintar();
+    })
+    .catch((err) => {
+      $("sin-esquinas").textContent = "No se pudo cargar eventos.geojson: " + err.message;
+    });
+  </script>
+</body>
+</html>
