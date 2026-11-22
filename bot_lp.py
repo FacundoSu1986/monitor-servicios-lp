@@ -86,7 +86,17 @@ PATRONES_ALERTA = (
     r"balean",
     r"balearon",
     r"motochorros?",
-    r"policias?",
+    r"entraderas?",
+    r"salideras?",
+    r"ladron(?:a|es|as)?",
+    r"delincuentes?",
+    r"a mano armada",
+    r"herid[oa]s?",
+    r"murio",
+    r"murieron",
+    r"fatales?",
+    r"colision(?:es)?",
+    r"despistes?",
 )
 # "luz", "agua" y "gas" solas dan falsos positivos ("salen a la luz"): se exigen
 # con contexto de servicio en el mismo titular (los contextos son prefijos).
@@ -503,7 +513,8 @@ def notificar_fallas_parciales(fallas: list[str]) -> None:
 def scraping_la_plata(ahora: datetime | None = None) -> int:
     try:
         ahora = ahora or datetime.now(TZ)
-        hallazgos, fallas = recolectar(crear_sesion(), ahora)
+        sesion = crear_sesion()
+        hallazgos, fallas = recolectar(sesion, ahora)
         titulos_previos, claves_previas = leer_historial(ARCHIVO)
         nuevos = nuevos_eventos(hallazgos, titulos_previos, claves_previas)
 
@@ -512,6 +523,12 @@ def scraping_la_plata(ahora: datetime | None = None) -> int:
             logging.info("Guardados %s eventos nuevos (de %s coincidencias).", len(nuevos), len(hallazgos))
             for fila in nuevos:
                 logging.info(" + %s | %s", fila["fecha"], fila["evento"])
+            try:
+                from enriquecer import enriquecer_nuevos
+
+                enriquecer_nuevos(sesion, nuevos)
+            except Exception:
+                logging.exception("No se pudo enriquecer las notas nuevas (el historial sí se guardó).")
             notificar_eventos(nuevos)
         else:
             logging.info("Sin eventos nuevos (coincidencias: %s).", len(hallazgos))

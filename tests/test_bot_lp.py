@@ -280,7 +280,7 @@ class FuentesTests(unittest.TestCase):
         filas = bot_lp.filas_desde_sitemap(items, AHORA)
         self.assertEqual([f["url"] for f in filas], ["https://www.0221.com.ar/policiales/fuerte-choque-en-romero-n200"])
         self.assertEqual(filas[0]["fecha"], "2026-11-22 08:15")
-        self.assertEqual(filas[0]["palabras"], "choque")
+        self.assertEqual(filas[0]["palabras"], "choque,heridos")
 
     def test_sitemap_sin_titulos_es_falla(self):
         vacio = '<?xml version="1.0"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>'
@@ -306,6 +306,8 @@ class FuentesTests(unittest.TestCase):
 
     def test_falla_parcial_sigue_y_avisa(self):
         with tempfile.TemporaryDirectory() as tmp, patch.object(bot_lp, "ARCHIVO", Path(tmp) / "h.csv"), patch(
+            "enriquecer.SALIDA", Path(tmp) / "n.geojson"
+        ), patch(
             "bot_lp.crear_sesion", return_value=_sesion(bot_lp.requests.HTTPError("404"), PORTADA)
         ), patch.dict(os.environ, ENV_TG, clear=False), patch("bot_lp.requests.post") as post:
             post.return_value = MagicMock()
@@ -319,6 +321,8 @@ class FuentesTests(unittest.TestCase):
 
     def test_segunda_corrida_no_repite(self):
         with tempfile.TemporaryDirectory() as tmp, patch.object(bot_lp, "ARCHIVO", Path(tmp) / "h.csv"), patch(
+            "enriquecer.SALIDA", Path(tmp) / "n.geojson"
+        ), patch(
             "bot_lp.crear_sesion", side_effect=lambda: _sesion(SITEMAP_NEWS, PORTADA)
         ), patch.dict(os.environ, {"TELEGRAM_BOT_TOKEN": "", "TELEGRAM_CHAT_ID": ""}):
             self.assertEqual(scraping_la_plata(AHORA), 2)
