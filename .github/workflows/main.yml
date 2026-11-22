@@ -2,14 +2,14 @@ name: Ejecutar Bot La Plata
 
 on:
   schedule:
-    # Original: 09:00 y 21:00 UTC = 06:00 y 18:00 America/Buenos_Aires.
-    # Si preferís 09:00 y 21:00 hora Argentina, usá: '0 12,0 * * *'
-    # GitHub puede atrasar el cron varias horas.
-    - cron: '0 9,21 * * *'
+    # 09:17 y 21:17 UTC = 06:17 y 18:17 hora Argentina.
+    # El minuto 17 es a propósito: GitHub atrasa (y a veces descarta) más los
+    # crons en punto. Si cambiás este valor, actualizá también los `if:` de abajo.
+    # Aunque el cron se atrase horas, el sitemap cubre ~48 h y no se pierden notas.
+    - cron: '17 9,21 * * *'
     # Keepalive: se chequea todos los lunes. Solo commitea si no hubo
     # actividad en ~50 días, para que GitHub no apague el cron a los 60.
-    # Un chequeo solo mensual puede llegar tarde (después del corte).
-    - cron: '0 12 * * 1'
+    - cron: '23 12 * * 1'
   workflow_dispatch:
 
 permissions:
@@ -21,14 +21,15 @@ concurrency:
 
 jobs:
   build:
-    if: github.event_name != 'schedule' || github.event.schedule == '0 9,21 * * *'
+    if: github.event_name != 'schedule' || github.event.schedule == '17 9,21 * * *'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Descargar código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Configurar Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
           cache: pip
@@ -38,7 +39,7 @@ jobs:
 
       - name: Correr el bot
         env:
-          TZ: America/Buenos_Aires
+          TZ: America/Argentina/Buenos_Aires
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python bot_lp.py
@@ -53,7 +54,15 @@ jobs:
             exit 0
           fi
           git commit -m "Actualización automática de historial"
-          git push
+          # Si alguien pusheó mientras corría el bot, integra y reintenta.
+          for intento in 1 2 3; do
+            if git push; then
+              exit 0
+            fi
+            echo "Push rechazado (intento ${intento}); integro cambios remotos."
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+          done
+          exit 1
 
       - name: Avisar error por Telegram
         if: failure()
@@ -77,11 +86,12 @@ jobs:
           fi
 
   keepalive:
-    if: github.event_name == 'schedule' && github.event.schedule == '0 12 * * 1'
+    if: github.event_name == 'schedule' && github.event.schedule == '23 12 * * 1'
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Descargar código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
