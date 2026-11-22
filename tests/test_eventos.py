@@ -1,3 +1,5 @@
+import json
+import tempfile
 import unittest
 from pathlib import Path
 from datetime import datetime, timedelta
@@ -93,6 +95,28 @@ class AgruparTests(unittest.TestCase):
             self.assertTrue(ev.is_file())
         despues = docs.read_text(encoding="utf-8") if docs.is_file() else None
         self.assertEqual(antes, despues)
+
+    def test_escritura_publica_omite_titulos(self):
+        import eventos
+        a = nota(id="10", titulo="Identificaron a Juan Pérez tras el choque en 7 y 50")
+        ev = construir_eventos([a])
+        self.assertIn("titulos", ev[0])
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "eventos.geojson"
+            eventos.escribir_eventos(path, ev)
+            data = json.loads(path.read_text(encoding="utf-8"))
+            props = data["features"][0]["properties"]
+        self.assertNotIn("titulos", props)
+        self.assertNotIn("titulo", props)
+        blob = json.dumps(data, ensure_ascii=False)
+        self.assertNotIn("Juan Pérez", blob)
+        self.assertNotIn("Identificaron", blob)
+        self.assertTrue(props.get("urls"))
+        self.assertEqual(props["categoria"], "accidente_vial")
+        self.assertEqual(props["lugar_texto"], "7 y 50")
+        self.assertIn("fecha_hecho", props)
+        self.assertIn("gravedad", props)
+
 
 if __name__ == "__main__":
     unittest.main()

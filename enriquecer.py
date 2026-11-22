@@ -75,13 +75,17 @@ def id_nota(url: str, fallback: str = "") -> str:
     return fallback
 
 
-def nota_a_feature(nota: dict) -> dict:
+CAMPOS_NOTA = (
+    "id", "url", "titulo", "fecha_pub", "fecha_hecho", "fecha_hecho_es_publicacion",
+    "tipo_nota", "categoria", "gravedad", "lugar_texto", "precision",
+)
+
+
+def nota_a_feature(nota: dict, omitir_titulo: bool = False) -> dict:
     lat, lon = nota.get("lat"), nota.get("lon")
     geom = {"type": "Point", "coordinates": [lon, lat]} if lat is not None and lon is not None else None
-    props = {k: nota[k] for k in (
-        "id", "url", "titulo", "fecha_pub", "fecha_hecho", "fecha_hecho_es_publicacion",
-        "tipo_nota", "categoria", "gravedad", "lugar_texto", "precision",
-    )}
+    campos = CAMPOS_NOTA if not omitir_titulo else tuple(c for c in CAMPOS_NOTA if c != "titulo")
+    props = {k: nota[k] for k in campos}
     props["lat"] = lat
     props["lon"] = lon
     return {"type": "Feature", "geometry": geom, "properties": props}
@@ -166,12 +170,15 @@ def leer_geojson(path: Path) -> dict[str, dict]:
     return out
 
 
-def escribir_geojson(path: Path, notas: list[dict]) -> None:
+def escribir_geojson(path: Path, notas: list[dict], omitir_titulo: bool | None = None) -> None:
+    """En el archivo canónico del repo (público) no se publican titulares con nombres."""
+    if omitir_titulo is None:
+        omitir_titulo = Path(path).resolve() == _CANON_NOTAS
     notas_ord = sorted(notas, key=lambda n: (n.get("fecha_pub") or "", n.get("id") or ""))
     data = {
         "type": "FeatureCollection",
         "name": "notas_enriquecidas",
-        "features": [nota_a_feature(n) for n in notas_ord],
+        "features": [nota_a_feature(n, omitir_titulo=omitir_titulo) for n in notas_ord],
     }
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
