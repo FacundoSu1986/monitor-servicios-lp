@@ -6,6 +6,10 @@ on:
     # Si preferís 09:00 y 21:00 hora Argentina, usá: '0 12,0 * * *'
     # GitHub puede atrasar el cron varias horas.
     - cron: '0 9,21 * * *'
+    # Keepalive: se chequea todos los lunes. Solo commitea si no hubo
+    # actividad en ~50 días, para que GitHub no apague el cron a los 60.
+    # Un chequeo solo mensual puede llegar tarde (después del corte).
+    - cron: '0 12 * * 1'
   workflow_dispatch:
 
 permissions:
@@ -17,6 +21,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.event_name != 'schedule' || github.event.schedule == '0 9,21 * * *'
     runs-on: ubuntu-latest
     steps:
       - name: Descargar código
@@ -70,3 +75,27 @@ jobs:
             echo "No se pudo avisar por Telegram (HTTP ${codigo})."
             exit 0
           fi
+
+  keepalive:
+    if: github.event_name == 'schedule' && github.event.schedule == '0 12 * * 1'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Keepalive si no hubo commits en 50 días
+        run: |
+          ultimo=$(git log -1 --format=%ct)
+          ahora=$(date +%s)
+          dias=$(( (ahora - ultimo) / 86400 ))
+          echo "Último commit hace ${dias} día(s)."
+          if [ "$dias" -lt 50 ]; then
+            echo "Hay actividad reciente; no hace falta keepalive."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit --allow-empty -m "Keepalive: evita que GitHub desactive el cron"
+          git push
