@@ -18,13 +18,18 @@ los nuevos por Telegram.
 2. Se queda con los titulares que tienen palabras de alerta (`PATRONES_ALERTA`):
    cortes, apagón, Edelap, ABSA, Camuzzi, tránsito, inundación, alertas
    meteorológicas, accidentes, choques, vuelcos, incendios, robos, asaltos,
-   tiroteos, motochorros, policía, etc. Coincide con y sin tildes y en plural.
+   tiroteos, motochorros, entraderas, colisiones, etc. Coincide con y sin tildes y en plural.
    `luz`, `agua` y `gas` solas solo cuentan con contexto de servicio ("corte de
    luz", "sin agua", "fuga de gas"…); "Suprema Corte", "corte de pasto" y
    similares no cuentan como corte.
 3. Descarta lo que ya está en el CSV, por titular o por ID de nota (el
    `-nNNNNNN` de la URL; así no se repite una nota a la que le cambiaron el título).
-4. Agrega lo nuevo al CSV, lo manda por Telegram y el workflow commitea el CSV.
+4. Agrega lo nuevo al CSV, descarga el cuerpo de cada nota nueva, extrae lugar
+   (esquina, cuadra, barrio o localidad) y la clasifica (tipo, categoría, gravedad
+   y fecha del hecho). El resultado va a `notas_enriquecidas.geojson`. Solo las
+   precisiones `esquina` y `cuadra` llevan coordenadas; un barrio o localidad no
+   se dibuja como punto en el centroide (evita zonas calientes falsas).
+5. Manda lo nuevo por Telegram y el workflow commitea el CSV y el GeoJSON.
 
 Si una fuente falla, el bot sigue con la otra y avisa por Telegram. Si fallan
 las dos (o una responde sin titulares, por ejemplo porque cambió el HTML), sale
@@ -74,6 +79,32 @@ python backfill.py --desde "2026-11-04 22:16" --hasta "2026-11-22" --dry-run
 ```
 
 Sin `--dry-run` escribe el CSV.
+
+
+## Ubicación y clasificación
+
+`ubicacion.py` y `clasificacion.py` trabajan sobre el titular más el cuerpo de la
+nota. Las esquinas se geocodifican en local con `data/intersecciones.json`
+(cruces precalculados de la red OSM de La Plata, Berisso y Ensenada). Los barrios
+y localidades están en `data/barrios.json`; sus centroides sirven solo para
+desambiguar cruces que existen en más de un lado de la ciudad, no como punto
+del evento. No se usa un geocodificador externo.
+
+Precisión posible: `esquina`, `cuadra`, `barrio`, `localidad`, `sin_lugar`.
+
+Tipo de nota: `hecho`, `seguimiento_judicial`, `anuncio`, `opinion_politica`.
+Categorías: cortes de luz/agua/gas, accidente vial, robo, homicidio o balacera,
+incendio, temporal o inundación, corte de calle o piquete, u `otro`.
+
+`historial_lp.csv` sigue siendo el registro crudo. El archivo derivado no se
+usa para avisos: reprocesar el historial no manda nada por Telegram.
+
+```bash
+python enriquecer.py --rehacer
+```
+
+`scripts/build_intersecciones.py` regenera el JSON de cruces a partir de una
+descarga Overpass (una sola vez; no corre en el bot).
 
 ## Tests
 
