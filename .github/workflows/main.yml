@@ -1,32 +1,49 @@
 name: Ejecutar Bot La Plata
+
 on:
   schedule:
-    - cron: '0 9,21 * * *' # Corre todos los días a las 9 AM y 9 PM (hora UTC)
-  workflow_dispatch: # Permite que vos le des a "Play" manualmente
+    # Original: 09:00 y 21:00 UTC = 06:00 y 18:00 America/Buenos_Aires.
+    # Si preferís 09:00 y 21:00 hora Argentina, usá: '0 12,0 * * *'
+    # GitHub puede atrasar el cron varias horas.
+    - cron: '0 9,21 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: monitor-lp
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Descargar código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Configurar Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
+          python-version: '3.12'
+          cache: pip
 
       - name: Instalar librerías
-        run: |
-          pip install requests beautifulsoup4 pandas
+        run: pip install -r requirements.txt
 
       - name: Correr el bot
+        env:
+          TZ: America/Buenos_Aires
         run: python bot_lp.py
 
       - name: Guardar cambios
         run: |
-          git config --global user.name 'GitHub Action'
-          git config --global user.email 'action@github.com'
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add historial_lp.csv
-          git commit -m "Actualización automática de historial" || exit 0
+          if git diff --cached --quiet; then
+            echo "Sin cambios en el historial."
+            exit 0
+          fi
+          git commit -m "Actualización automática de historial"
           git push
