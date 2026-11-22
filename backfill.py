@@ -13,7 +13,6 @@ from __future__ import annotations
 
 import argparse
 import csv
-import gzip
 import json
 import logging
 import re
@@ -22,8 +21,6 @@ import time
 from datetime import datetime
 from pathlib import Path
 from typing import Iterable
-from urllib.parse import urlparse
-from zoneinfo import ZoneInfo
 
 import requests
 from bs4 import BeautifulSoup
@@ -33,10 +30,16 @@ from bot_lp import (
     ARCHIVO,
     CAMPOS,
     TIMEOUT,
+    SECCIONES,
     TZ,
+    URL_SITEMAP_NEWS,
     _normalizar,
-    leer_eventos_previos,
+    _xml,
+    clave_nota,
     palabras_encontradas,
+    parse_fecha_iso,
+    parse_sitemap_urlset,
+    seccion_de,
 )
 
 UA = (
@@ -44,13 +47,8 @@ UA = (
     "(historial local de eventos; contacto: repo GitHub FacundoSu1986/monitor-servicios-lp)"
 )
 SITEMAP_INDEX = "https://www.0221.com.ar/sitemap/news-full/sitemap-index.xml"
-SITEMAP_NEWS = "https://www.0221.com.ar/sitemap-news.xml"
-SECCIONES_DEFAULT = ("la-plata", "policiales", "berisso", "ensenada")
-NS_SM = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
-NS_NEWS = {
-    "sm": "http://www.sitemaps.org/schemas/sitemap/0.9",
-    "news": "http://www.google.com/schemas/sitemap-news/0.9",
-}
+SITEMAP_NEWS = URL_SITEMAP_NEWS
+SECCIONES_DEFAULT = SECCIONES
 
 
 class ThrottledSession:
@@ -96,26 +94,6 @@ def parse_fecha_arg(texto: str, fin_del_dia: bool = False) -> datetime:
     return dt.astimezone(TZ)
 
 
-def parse_fecha_iso(texto: str) -> datetime | None:
-    if not texto:
-        return None
-    texto = texto.strip()
-    if texto.endswith("Z"):
-        texto = texto[:-1] + "+00:00"
-    try:
-        dt = datetime.fromisoformat(texto)
-    except ValueError:
-        return None
-    if dt.tzinfo is None:
-        dt = dt.replace(tzinfo=TZ)
-    return dt.astimezone(TZ)
-
-
-def seccion_de(url: str) -> str:
-    path = urlparse(url).path.lstrip("/")
-    return path.split("/", 1)[0] if path else ""
-
-
 def texto_slug(url: str) -> str:
     slug = url.rstrip("/").rsplit("/", 1)[-1]
     slug = re.sub(r"-n\d+$", "", slug)
@@ -124,36 +102,6 @@ def texto_slug(url: str) -> str:
 
 def en_ventana(dt: datetime | None, desde: datetime, hasta: datetime) -> bool:
     return dt is not None and desde <= dt <= hasta
-
-
-def _xml(contenido: bytes | str) -> BeautifulSoup:
-    if isinstance(contenido, bytes):
-        if contenido[:2] == b"\x1f\x8b":
-            contenido = gzip.decompress(contenido)
-        contenido = contenido.decode("utf-8", "replace")
-    return BeautifulSoup(contenido, "xml")
-
-
-def parse_sitemap_urlset(contenido: bytes | str) -> list[dict]:
-    """Parsea un urlset (mensual o news). Devuelve loc, lastmod, título y fecha de publicación si hay."""
-    soup = _xml(contenido)
-    filas: list[dict] = []
-    for url in soup.find_all("url"):
-        loc = url.find("loc")
-        if loc is None or not loc.get_text(strip=True):
-            continue
-        lastmod = url.find("lastmod")
-        pub = url.find("publication_date") or url.find("news:publication_date")
-        title = url.find("title") or url.find("news:title")
-        filas.append(
-            {
-                "url": loc.get_text(strip=True),
-                "lastmod": parse_fecha_iso(lastmod.get_text(strip=True) if lastmod else ""),
-                "publicado": parse_fecha_iso(pub.get_text(strip=True) if pub else ""),
-                "titulo": (title.get_text(strip=True) if title else ""),
-            }
-        )
-    return filas
 
 
 def meses_solapados(desde: datetime, hasta: datetime) -> list[str]:
@@ -309,12 +257,17 @@ def candidatos_a_filas(
     desde: datetime,
     hasta: datetime,
     vistos: set[str],
+    claves: set[str] | None = None,
 ) -> tuple[list[dict[str, str]], int, int]:
-    """Aplica filtro de palabras y ventana. Devuelve filas nuevas, omitidos por fecha y por dedup."""
+    """Aplica filtro de palabras y ventana. Devuelve filas nuevas, omitidos por fecha y por dedup.
+
+    Deduplica por titular normalizado y, si se pasan, por ID de nota de 0221.
+    """
     nuevas: list[dict[str, str]] = []
     omitidos_fecha = 0
     omitidos_dedup = 0
     ya = set(vistos)
+    ya_claves = set(claves or ())
     for item in items:
         titulo = (item.get("titulo") or "").strip()
         if not titulo:
@@ -327,10 +280,13 @@ def candidatos_a_filas(
             omitidos_fecha += 1
             continue
         clave = _normalizar(titulo)
-        if clave in ya:
+        id_nota = clave_nota(item["url"])
+        if clave in ya or (id_nota and id_nota in ya_claves):
             omitidos_dedup += 1
             continue
         ya.add(clave)
+        if id_nota:
+            ya_claves.add(id_nota)
         assert dt is not None
         nuevas.append(
             {
@@ -383,7 +339,8 @@ def run(args: argparse.Namespace) -> int:
 
     existentes = normalizar_historial(path)
     vistos = {_normalizar(f["evento"]) for f in existentes}
-    nuevas, fuera, dup = candidatos_a_filas(enriquecidos, desde, hasta, vistos)
+    claves = {c for c in (clave_nota(f["url"]) for f in existentes) if c}
+    nuevas, fuera, dup = candidatos_a_filas(enriquecidos, desde, hasta, vistos, claves)
     aprox = sum(1 for i in enriquecidos if i.get("fecha_aproximada") and _normalizar(i.get("titulo") or "") in {_normalizar(n["evento"]) for n in nuevas})
 
     logging.info("Nuevos: %s | ya estaban: %s | fuera de ventana (fecha real): %s | fecha aproximada: %s", len(nuevas), dup, fuera, aprox)

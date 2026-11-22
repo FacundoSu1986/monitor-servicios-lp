@@ -138,6 +138,21 @@ class CandidatosTests(unittest.TestCase):
         self.assertEqual(nuevas[0]["fecha"], "2026-11-10 15:30")
         self.assertIn("luz", nuevas[0]["palabras"])
 
+    def test_dedup_por_id_de_nota_aunque_cambie_el_titulo(self):
+        desde = datetime(2026, 11, 4, 22, 16, tzinfo=TZ)
+        hasta = datetime(2026, 11, 22, 23, 59, tzinfo=TZ)
+        items = [
+            {
+                "url": "https://www.0221.com.ar/la-plata/video-asi-fue-el-accidente-n137814",
+                "titulo": "Video: así fue el accidente de tránsito en La Plata",
+                "publicado": datetime(2026, 11, 21, 16, 3, tzinfo=TZ),
+                "lastmod": None,
+            }
+        ]
+        nuevas, _fuera, dup = backfill.candidatos_a_filas(items, desde, hasta, set(), {"137814"})
+        self.assertEqual(nuevas, [])
+        self.assertEqual(dup, 1)
+
     def test_normalizar_historial_migra_fila_vieja_con_url(self):
         with tempfile.TemporaryDirectory() as tmp:
             path = Path(tmp) / "historial_lp.csv"
