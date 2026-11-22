@@ -80,6 +80,21 @@ python backfill.py --desde "2026-11-04 22:16" --hasta "2026-11-22" --dry-run
 
 Sin `--dry-run` escribe el CSV.
 
+### Recuperar URLs de filas viejas
+
+Las filas anteriores a que el bot guardara el link quedan con `url` vacío.
+`recuperar_urls.py` las empareja con los sitemaps mensuales de 0221 (título → slug
+de la URL, ±3 días alrededor de la fecha de la fila). Solo descarga la nota si el
+match es dudoso, para confirmar el titular. No manda Telegram, no reordena el CSV
+y deja sin URL lo que no sea confiable.
+
+```bash
+python recuperar_urls.py --dry-run
+python recuperar_urls.py
+python enriquecer.py --rehacer --cache-dir /tmp/enriquecer_cache
+```
+
+
 
 ## Ubicación y clasificación
 

@@ -106,7 +106,40 @@ def enriquecer_texto(
     }
 
 
-def bajar_nota(sesion: requests.Session, url: str, delay: float, ultimo: list[float]) -> tuple[str, str, str]:
+def _cache_path(cache_dir: Path, url: str) -> Path:
+    return cache_dir / f"{id_nota(url) or 'sinid'}.json"
+
+
+def leer_cache(cache_dir: Path | None, url: str) -> tuple[str, str, str] | None:
+    if not cache_dir:
+        return None
+    path = _cache_path(cache_dir, url)
+    if not path.is_file():
+        return None
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return data.get("titulo") or "", data.get("fecha") or "", data.get("cuerpo") or ""
+
+
+def guardar_cache(cache_dir: Path | None, url: str, titulo: str, fecha: str, cuerpo: str) -> None:
+    if not cache_dir:
+        return
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    _cache_path(cache_dir, url).write_text(
+        json.dumps({"titulo": titulo, "fecha": fecha, "cuerpo": cuerpo}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+
+def bajar_nota(
+    sesion: requests.Session,
+    url: str,
+    delay: float,
+    ultimo: list[float],
+    cache_dir: Path | None = None,
+) -> tuple[str, str, str]:
+    cached = leer_cache(cache_dir, url)
+    if cached is not None:
+        return cached
     espera = delay - (time.monotonic() - ultimo[0]) if ultimo[0] else 0
     if espera > 0:
         time.sleep(espera)
@@ -116,6 +149,7 @@ def bajar_nota(sesion: requests.Session, url: str, delay: float, ultimo: list[fl
     titulo, publicado = extraer_articulo(resp.text)
     cuerpo = cuerpo_nota(resp.text)
     fecha = publicado.astimezone(TZ).strftime(FORMATO_FECHA) if publicado else ""
+    guardar_cache(cache_dir, url, titulo, fecha, cuerpo)
     return titulo, fecha, cuerpo
 
 
@@ -147,6 +181,7 @@ def enriquecer_filas(
     existentes: dict[str, dict] | None = None,
     delay: float = 1.0,
     rehacer: bool = False,
+    cache_dir: Path | None = None,
 ) -> list[dict]:
     """Enriquece filas con URL. No envía Telegram. Reusa features ya calculados salvo --rehacer."""
     sesion = sesion or crear_sesion()
@@ -168,7 +203,7 @@ def enriquecer_filas(
         titulo_csv = (fila.get("evento") or "").strip()
         fecha_csv = (fila.get("fecha") or "").strip()
         try:
-            titulo, fecha_html, cuerpo = bajar_nota(sesion, url, delay, ultimo)
+            titulo, fecha_html, cuerpo = bajar_nota(sesion, url, delay, ultimo, cache_dir=cache_dir)
         except requests.RequestException as exc:
             logging.warning("No pude leer %s: %s", url, exc)
             cuerpo, titulo, fecha_html = "", titulo_csv, fecha_csv
@@ -217,7 +252,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--historial", default=str(ARCHIVO))
     p.add_argument("--salida", default=str(SALIDA))
     p.add_argument("--delay", type=float, default=1.0)
-    p.add_argument("--rehacer", action="store_true", help="Ignora el GeoJSON previo y vuelve a bajar las notas")
+    p.add_argument("--rehacer", action="store_true", help="Ignora el GeoJSON previo y vuelve a procesar (usa caché si hay)")
+    p.add_argument("--cache-dir", default="", help="Caché local de cuerpos (no commitear). Evita redescargar al reprocesar.")
     p.add_argument("--dry-run", action="store_true")
     args = p.parse_args(argv)
 
@@ -229,6 +265,7 @@ def main(argv: list[str] | None = None) -> int:
         existentes={} if args.rehacer else leer_geojson(Path(args.salida)),
         delay=args.delay,
         rehacer=args.rehacer,
+        cache_dir=Path(args.cache_dir) if args.cache_dir else None,
     )
     if args.dry_run:
         logging.info("Dry-run: no se escribe %s (%s notas)", args.salida, len(notas))
