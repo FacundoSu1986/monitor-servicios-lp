@@ -9928,6 +9928,84 @@
     },
     {
       "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.89707,
+          -34.95966
+        ]
+      },
+      "properties": {
+        "id": "137746",
+        "url": "https://www.0221.com.ar/policiales/ya-tiene-fecha-el-veredicto-del-juicio-la-muerte-ruta-11-una-mujer-y-su-hija-ser-atropelladas-n137746",
+        "fecha_pub": "2026-11-20 11:44",
+        "fecha_hecho": "2026-11-20 11:44",
+        "fecha_hecho_es_publicacion": true,
+        "tipo_nota": "seguimiento_judicial",
+        "categoria": "accidente_vial",
+        "gravedad": "fatal",
+        "lugar_texto": "11 y 609",
+        "precision": "esquina",
+        "lat": -34.95966,
+        "lon": -57.89707
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id": "137763",
+        "url": "https://www.0221.com.ar/la-plata/la-municipalidad-la-plata-lanzo-el-alerta-amarillo-tormentas-fuertes-n137763",
+        "fecha_pub": "2026-11-20 14:03",
+        "fecha_hecho": "2026-11-20 14:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "temporal_inundacion",
+        "gravedad": "baja",
+        "lugar_texto": "",
+        "precision": "sin_lugar",
+        "lat": null,
+        "lon": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id": "137767",
+        "url": "https://www.0221.com.ar/la-plata/la-imagen-radar-que-muestra-que-hora-dura-la-tormenta-la-plata-medio-del-alerta-amarillo-n137767",
+        "fecha_pub": "2026-11-20 14:57",
+        "fecha_hecho": "2026-11-20 14:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "temporal_inundacion",
+        "gravedad": "baja",
+        "lugar_texto": "",
+        "precision": "sin_lugar",
+        "lat": null,
+        "lon": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id": "137777",
+        "url": "https://www.0221.com.ar/policiales/tras-un-megaoperativo-allanamientos-la-plata-cayo-una-banda-que-planeaba-robos-bancos-bonaerenses-n137777",
+        "fecha_pub": "2026-11-20 18:04",
+        "fecha_hecho": "2026-11-20 18:04",
+        "fecha_hecho_es_publicacion": true,
+        "tipo_nota": "hecho",
+        "categoria": "robo",
+        "gravedad": "arma_o_entradera",
+        "lugar_texto": "",
+        "precision": "sin_lugar",
+        "lat": null,
+        "lon": null
+      }
+    },
+    {
+      "type": "Feature",
       "geometry": null,
       "properties": {
         "id": "137774",
@@ -9939,6 +10017,24 @@
         "categoria": "robo",
         "gravedad": "arma_o_entradera",
         "lugar_texto": "Gonnet",
+        "precision": "localidad",
+        "lat": null,
+        "lon": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id": "137787",
+        "url": "https://www.0221.com.ar/la-plata/dos-motos-chocaron-city-bell-y-un-joven-20-anos-termino-internado-el-hospital-gonnet-n137787",
+        "fecha_pub": "2026-11-20 20:13",
+        "fecha_hecho": "2026-11-20 20:13",
+        "fecha_hecho_es_publicacion": true,
+        "tipo_nota": "hecho",
+        "categoria": "accidente_vial",
+        "gravedad": "heridos",
+        "lugar_texto": "City Bell",
         "precision": "localidad",
         "lat": null,
         "lon": null
@@ -10038,6 +10134,30 @@
         "precision": "cuadra",
         "lat": -34.939567,
         "lon": -58.011688
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -58.0413,
+          -34.94952
+        ]
+      },
+      "properties": {
+        "id": "137843",
+        "url": "https://www.0221.com.ar/policiales/video-atropello-un-ciclista-la-plata-escapo-la-bicicleta-debajo-del-auto-y-lo-buscan-n137843",
+        "fecha_pub": "2026-11-22 13:34",
+        "fecha_hecho": "2026-11-21 13:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "accidente_vial",
+        "gravedad": "heridos",
+        "lugar_texto": "167 y 523",
+        "precision": "esquina",
+        "lat": -34.94952,
+        "lon": -58.0413
       }
     }
   ]

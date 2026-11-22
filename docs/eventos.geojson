@@ -13215,6 +13215,120 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -57.89707,
+          -34.95966
+        ]
+      },
+      "properties": {
+        "id_evento": "e137746",
+        "categoria": "accidente_vial",
+        "gravedad": "fatal",
+        "fecha_hecho": "2026-11-20 11:44",
+        "lugar_texto": "11 y 609",
+        "precision": "esquina",
+        "lat": -34.95966,
+        "lon": -57.89707,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/ya-tiene-fecha-el-veredicto-del-juicio-la-muerte-ruta-11-una-mujer-y-su-hija-ser-atropelladas-n137746"
+        ],
+        "ids_notas": [
+          "137746"
+        ],
+        "tipos_nota": [
+          "seguimiento_judicial"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id_evento": "e137763",
+        "categoria": "temporal_inundacion",
+        "gravedad": "baja",
+        "fecha_hecho": "2026-11-20 14:00",
+        "lugar_texto": "",
+        "precision": "sin_lugar",
+        "lat": null,
+        "lon": null,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/la-plata/la-municipalidad-la-plata-lanzo-el-alerta-amarillo-tormentas-fuertes-n137763"
+        ],
+        "ids_notas": [
+          "137763"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "baja"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id_evento": "e137767",
+        "categoria": "temporal_inundacion",
+        "gravedad": "baja",
+        "fecha_hecho": "2026-11-20 14:00",
+        "lugar_texto": "",
+        "precision": "sin_lugar",
+        "lat": null,
+        "lon": null,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/la-plata/la-imagen-radar-que-muestra-que-hora-dura-la-tormenta-la-plata-medio-del-alerta-amarillo-n137767"
+        ],
+        "ids_notas": [
+          "137767"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "baja"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id_evento": "e137777",
+        "categoria": "robo",
+        "gravedad": "arma_o_entradera",
+        "fecha_hecho": "2026-11-20 18:04",
+        "lugar_texto": "",
+        "precision": "sin_lugar",
+        "lat": null,
+        "lon": null,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/tras-un-megaoperativo-allanamientos-la-plata-cayo-una-banda-que-planeaba-robos-bancos-bonaerenses-n137777"
+        ],
+        "ids_notas": [
+          "137777"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "baja"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -57.94327,
           -34.89516
         ]
@@ -13241,6 +13355,33 @@
         ],
         "n_notas": 1,
         "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id_evento": "e137787",
+        "categoria": "accidente_vial",
+        "gravedad": "heridos",
+        "fecha_hecho": "2026-11-20 20:13",
+        "lugar_texto": "City Bell",
+        "precision": "localidad",
+        "lat": null,
+        "lon": null,
+        "lat_aprox": -34.863,
+        "lon_aprox": -58.047,
+        "urls": [
+          "https://www.0221.com.ar/la-plata/dos-motos-chocaron-city-bell-y-un-joven-20-anos-termino-internado-el-hospital-gonnet-n137787"
+        ],
+        "ids_notas": [
+          "137787"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "baja"
       }
     },
     {
@@ -13276,6 +13417,39 @@
         ],
         "n_notas": 2,
         "confianza": "alta"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -58.0413,
+          -34.94952
+        ]
+      },
+      "properties": {
+        "id_evento": "e137843",
+        "categoria": "accidente_vial",
+        "gravedad": "heridos",
+        "fecha_hecho": "2026-11-21 13:00",
+        "lugar_texto": "167 y 523",
+        "precision": "esquina",
+        "lat": -34.94952,
+        "lon": -58.0413,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/video-atropello-un-ciclista-la-plata-escapo-la-bicicleta-debajo-del-auto-y-lo-buscan-n137843"
+        ],
+        "ids_notas": [
+          "137843"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
       }
     },
     {
