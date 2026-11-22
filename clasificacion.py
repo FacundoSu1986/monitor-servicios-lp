@@ -56,8 +56,8 @@ _TIPO = (
 _CATEGORIA = (
     ("homicidio_balacera", re.compile(r"(?<!\w)(?:homicidio|asesinat[oa]|mataron|lo mataron|la mataron|tiroteos?|balaceras?|balead[oa]s?|balearon|crimen)\b", re.I)),
     ("incendio", re.compile(r"(?<!\w)incendios?\b", re.I)),
-    ("corte_luz", re.compile(r"(?<!\w)(?:edelap|cortes? de luz|sin luz|apagon(?:es)?|falta de luz)\b", re.I)),
-    ("corte_agua", re.compile(r"(?<!\w)(?:absa|cortes? de agua|sin agua|falta de agua)\b", re.I)),
+    ("corte_luz", re.compile(r"(?<!\w)(?:edelap|cortes?(?:\s+\w+){0,2}\s+de luz|sin luz|apagon(?:es)?|falta de luz|servicio de luz|recup\w* la luz|restituy\w* (?:el )?servicio)\b", re.I)),
+    ("corte_agua", re.compile(r"(?<!\w)(?:absa|cortes?(?:\s+\w+){0,2}\s+de agua|sin agua|falta de agua)\b", re.I)),
     ("corte_gas", re.compile(r"(?<!\w)(?:camuzzi|cortes? de gas|sin gas|fuga de gas|escape de gas)\b", re.I)),
     ("temporal_inundacion", re.compile(r"(?<!\w)(?:inundacion(?:es)?|temporal(?:es)?|alerta (?:amarill[ao]|naranja|roj[ao])|tormenta(?:s)? fuertes?)\b", re.I)),
     ("accidente_vial", re.compile(r"(?<!\w)(?:accidentes?(?: de transito)?|choques?|choco|chocaron|vuelcos?|volco|despiste|colision(?:es)?|atropell\w*)\b", re.I)),
@@ -65,19 +65,34 @@ _CATEGORIA = (
     ("corte_calle_piquete", re.compile(r"(?<!\w)(?:piquetes?|cortes? de (?:calle|transito|ruta)|desvios? de transito|movilizacion|cortaron la (?:ruta|avenida|calle)|cortes y desvios)\b", re.I)),
 )
 
-_FATAL = re.compile(r"(?<!\w)(?:murio|murieron|muert[oa]s?|fallec\w*|fatal(?:es)?|perdio la vida|perdieron la vida|deceso)\b", re.I)
-_HERIDOS = re.compile(r"(?<!\w)(?:herid[oa]s?|internad[oa]s?|hospitalizad[oa]s?|lesiones|estado (?:reservado|critico|grave)|riesgo de vida)\b", re.I)
-_ARMA = re.compile(r"(?<!\w)(?:a mano armada|armas?|entraderas?|(?<!pedido de )secuestros?(?!\s+activo)|rehenes|cuchillo|punal|apunal)\b", re.I)
-_MOTOCHORRO = re.compile(r"(?<!\w)motochorros?\b", re.I)
-_AMPLIO = re.compile(r"(?<!\w)(?:miles de|distintos barrios|varios barrios|cuatro sectores|varios sectores|la region|masivas?|masivo|ampli[oa]s? zona)\b", re.I)
-
-_ANCHE = re.compile(r"(?<!\w)(?:anoche|ayer a la noche|la noche del)\b", re.I)
-_ESTA_MADRUGADA = re.compile(r"(?<!\w)(?:esta madrugada|hoy a la madrugada|en la madrugada|durante la madrugada)\b", re.I)
-_ESTA_MANANA = re.compile(r"(?<!\w)(?:esta manana|hoy a la manana|esta mañana|hoy a la mañana)\b", re.I)
-_ESTA_TARDE = re.compile(r"(?<!\w)(?:esta tarde|hoy a la tarde)\b", re.I)
-_DIA_REL = re.compile(
-    r"(?<!\w)(?:el|este|este pasado|el pasado|el ultimo|ultimo)?\s*(lunes|martes|miercoles|jueves|viernes|sabado|domingo)"
-    r"(?:\s+a la\s+(madrugada|manana|mañana|tarde|noche))?",
+# Incendios que no son un hecho local (otra región, ficción, simulacro, alerta genérica).
+_INCENDIO_AJENO = re.compile(
+    r"(?:patagonia|incendios? en el sur|el fuego en(?: la)? patagonia|"
+    r"combat(?:e|ir|ieron) (?:los )?incendios en|"
+    r"invocar lluvias|"
+    r"estacion constitucion|(?<!\w)constitucion(?!\w)|tren roca|"
+    r"filmaci[oó]n de netflix|rodaje de (?:la )?(?:miniserie |nueva serie )?de netflix|"
+    r"asi sera la filmacion|"
+    r"simulacro de incendio|"
+    r"bombero drone|bombero dron|"
+    r"riesgo extremo de incendios|"
+    r"(?<!\w)brandsen(?!\w))",
+    re.I,
+)
+_ACCIDENTE_EN_TITULO = re.compile(
+    r"(?<!\w)(?:choques?|choco|chocaron|vuelcos?|volco|despiste|colision(?:es)?|"
+    r"accidente(?:s)? de transito|motociclista)\b",
+    re.I,
+)
+# "el incendio fue un accidente" no es un hecho vial.
+_ACCIDENTE_NO_VIAL = re.compile(r"incendio.{0,40}fue un accidente|fue un accidente.{0,40}incendio", re.I)
+_AGUA_EN_TITULO = re.compile(
+    r"(?<!\w)(?:absa|sin agua|falta de agua|falt\w* agua|cortes?(?:\s+\w+){0,2}\s+de agua)\b",
+    re.I,
+)
+_LUZ_EN_TITULO = re.compile(
+    r"(?<!\w)(?:edelap|sin luz|apagon(?:es)?|falta de luz|cortes?(?:\s+\w+){0,2}\s+de luz|"
+    r"recup[eé]r\w* la luz|servicio de luz|generadores?)\b",
     re.I,
 )
 
@@ -95,12 +110,46 @@ def clasificar_tipo(titulo: str, cuerpo: str = "") -> str:
 
 
 def clasificar_categoria(titulo: str, cuerpo: str = "") -> str:
-    # El titular pesa más: si ya define categoría, se usa.
-    for origen in (_plano(titulo), _plano(f"{titulo}\n{cuerpo}")):
+    """El titular pesa más. El incendio no pisa un choque ni un corte de luz del titular,
+    y se descartan incendios ajenos a Gran La Plata (Patagonia, CABA, ficción, simulacros)."""
+    tit = _plano(titulo)
+    full = _plano(f"{titulo}\n{cuerpo}")
+
+    def _permite(cat: str, origen: str, es_titulo: bool) -> bool:
+        if cat == "incendio":
+            if _INCENDIO_AJENO.search(full):
+                return False
+            if _ACCIDENTE_EN_TITULO.search(tit) and not _ACCIDENTE_NO_VIAL.search(tit):
+                return False
+            if _LUZ_EN_TITULO.search(tit) or _AGUA_EN_TITULO.search(tit):
+                return False
+        if cat == "accidente_vial" and _ACCIDENTE_NO_VIAL.search(origen):
+            return False
+        return True
+
+    for origen, es_titulo in ((tit, True), (full, False)):
         for cat, regex in _CATEGORIA:
-            if regex.search(origen):
+            if regex.search(origen) and _permite(cat, origen, es_titulo):
                 return cat
     return "otro"
+
+
+
+_FATAL = re.compile(r"(?<!\w)(?:murio|murieron|muert[oa]s?|fallec\w*|fatal(?:es)?|perdio la vida|perdieron la vida|deceso)\b", re.I)
+_HERIDOS = re.compile(r"(?<!\w)(?:herid[oa]s?|internad[oa]s?|hospitalizad[oa]s?|lesiones|estado (?:reservado|critico|grave)|riesgo de vida)\b", re.I)
+_ARMA = re.compile(r"(?<!\w)(?:a mano armada|armas?|entraderas?|(?<!pedido de )secuestros?(?!\s+activo)|rehenes|cuchillo|punal|apunal)\b", re.I)
+_MOTOCHORRO = re.compile(r"(?<!\w)motochorros?\b", re.I)
+_AMPLIO = re.compile(r"(?<!\w)(?:miles de|distintos barrios|varios barrios|cuatro sectores|varios sectores|la region|masivas?|masivo|ampli[oa]s? zona)\b", re.I)
+
+_ANCHE = re.compile(r"(?<!\w)(?:anoche|ayer a la noche|la noche del)\b", re.I)
+_ESTA_MADRUGADA = re.compile(r"(?<!\w)(?:esta madrugada|hoy a la madrugada|en la madrugada|durante la madrugada)\b", re.I)
+_ESTA_MANANA = re.compile(r"(?<!\w)(?:esta manana|hoy a la manana|esta mañana|hoy a la mañana)\b", re.I)
+_ESTA_TARDE = re.compile(r"(?<!\w)(?:esta tarde|hoy a la tarde)\b", re.I)
+_DIA_REL = re.compile(
+    r"(?<!\w)(?:el|este|este pasado|el pasado|el ultimo|ultimo)?\s*(lunes|martes|miercoles|jueves|viernes|sabado|domingo)"
+    r"(?:\s+a la\s+(madrugada|manana|mañana|tarde|noche))?",
+    re.I,
+)
 
 
 def clasificar_gravedad(categoria: str, titulo: str, cuerpo: str = "") -> str:

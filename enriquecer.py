@@ -36,6 +36,7 @@ from clasificacion import clasificar
 from ubicacion import extraer_lugar
 
 SALIDA = Path("notas_enriquecidas.geojson")
+_CANON_NOTAS = Path(__file__).resolve().parent / "notas_enriquecidas.geojson"
 
 
 def cuerpo_nota(html: str) -> str:
@@ -237,6 +238,17 @@ def enriquecer_nuevos(sesion: requests.Session, filas: list[dict[str, str]], sal
         por_id[str(n["id"])] = n
     escribir_geojson(salida, list(por_id.values()))
     logging.info("GeoJSON actualizado: %s notas en %s", len(por_id), salida)
+    try:
+        from eventos import actualizar_eventos
+
+        ev = Path(salida).with_name("eventos.geojson")
+        actualizar_eventos(
+            list(por_id.values()),
+            salida=ev,
+            copiar_docs=Path(salida).resolve() == _CANON_NOTAS,
+        )
+    except Exception:
+        logging.exception("No se pudo actualizar eventos.geojson (las notas sí se guardaron).")
 
 
 def filas_con_url(path: Path) -> list[dict[str, str]]:
@@ -272,6 +284,12 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     escribir_geojson(Path(args.salida), notas)
     logging.info("Escrito %s con %s notas", args.salida, len(notas))
+    try:
+        from eventos import actualizar_eventos
+
+        actualizar_eventos(notas)
+    except Exception:
+        logging.exception("No se pudo actualizar eventos.geojson (las notas sí se guardaron).")
     return 0
 
 
