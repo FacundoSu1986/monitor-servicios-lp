@@ -13299,6 +13299,39 @@
     },
     {
       "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.917457,
+          -34.938815
+        ]
+      },
+      "properties": {
+        "id_evento": "e137851",
+        "categoria": "robo",
+        "gravedad": "hurto",
+        "fecha_hecho": "2026-11-20 16:00",
+        "lugar_texto": "7 y 82",
+        "precision": "esquina",
+        "lat": -34.938815,
+        "lon": -57.917457,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/robaron-un-jardin-la-plata-se-llevaron-ventiladores-y-danaron-las-instalaciones-n137851"
+        ],
+        "ids_notas": [
+          "137851"
+        ],
+        "tipos_nota": [
+          "anuncio"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
       "geometry": null,
       "properties": {
         "id_evento": "e137777",
@@ -13477,6 +13510,39 @@
         ],
         "ids_notas": [
           "137809"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.98745,
+          -34.9589
+        ]
+      },
+      "properties": {
+        "id_evento": "e137853",
+        "categoria": "accidente_vial",
+        "gravedad": "heridos",
+        "fecha_hecho": "2026-11-21 17:00",
+        "lugar_texto": "58 y 149",
+        "precision": "esquina",
+        "lat": -34.9589,
+        "lon": -57.98745,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/la-plata/accidente-transito-los-hornos-dos-jovenes-terminaron-heridos-un-choque-motos-n137853"
+        ],
+        "ids_notas": [
+          "137853"
         ],
         "tipos_nota": [
           "hecho"
