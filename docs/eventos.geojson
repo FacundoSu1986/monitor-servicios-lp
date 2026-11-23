@@ -13550,6 +13550,198 @@
         "n_notas": 1,
         "confianza": "media"
       }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id_evento": "e137864",
+        "categoria": "robo",
+        "gravedad": "arma_o_entradera",
+        "fecha_hecho": "2026-11-23 03:00",
+        "lugar_texto": "Camino Centenario",
+        "precision": "cuadra",
+        "lat": null,
+        "lon": null,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/ladrones-entraron-una-casa-gonnet-y-amenazaron-dos-medicos-cortarles-los-dedos-y-las-orejas-n137864"
+        ],
+        "ids_notas": [
+          "137864"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.94001,
+          -34.942458
+        ]
+      },
+      "properties": {
+        "id_evento": "e137892",
+        "categoria": "homicidio_balacera",
+        "gravedad": "fatal",
+        "fecha_hecho": "2026-11-23 03:00",
+        "lugar_texto": "19 y 72",
+        "precision": "esquina",
+        "lat": -34.942458,
+        "lon": -57.94001,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/un-conductor-didi-fue-baleado-un-intento-robo-la-plata-y-termino-internado-n137892"
+        ],
+        "ids_notas": [
+          "137892"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -58.02653,
+          -34.895925
+        ]
+      },
+      "properties": {
+        "id_evento": "e137865",
+        "categoria": "homicidio_balacera",
+        "gravedad": "fatal",
+        "fecha_hecho": "2026-11-23 10:43",
+        "lugar_texto": "29 entre 496 y 497",
+        "precision": "cuadra",
+        "lat": -34.895925,
+        "lon": -58.02653,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/la-plata/dos-hombres-discutieron-gonnet-y-cuando-se-iban-uno-desato-una-balacera-que-casi-termina-tragedia-n137865"
+        ],
+        "ids_notas": [
+          "137865"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.96722,
+          -34.910295
+        ]
+      },
+      "properties": {
+        "id_evento": "e137883",
+        "categoria": "accidente_vial",
+        "gravedad": "heridos",
+        "fecha_hecho": "2026-11-23 15:00",
+        "lugar_texto": "38 y 12",
+        "precision": "esquina",
+        "lat": -34.910295,
+        "lon": -57.96722,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/una-motociclista-protagonizo-un-grave-accidente-la-plata-y-sufrio-una-fractura-expuesta-n137883"
+        ],
+        "ids_notas": [
+          "137883"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.97762,
+          -34.88416
+        ]
+      },
+      "properties": {
+        "id_evento": "e137880",
+        "categoria": "incendio",
+        "gravedad": "baja",
+        "fecha_hecho": "2026-11-23 15:31",
+        "lugar_texto": "1 y 519",
+        "precision": "esquina",
+        "lat": -34.88416,
+        "lon": -57.97762,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/la-plata/video-tension-ringuelet-un-incendio-pastizales-que-llego-las-vias-del-tren-n137880"
+        ],
+        "ids_notas": [
+          "137880"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -58.013585,
+          -34.904695
+        ]
+      },
+      "properties": {
+        "id_evento": "e137882",
+        "categoria": "otro",
+        "gravedad": "alta",
+        "fecha_hecho": "2026-11-23 16:00",
+        "lugar_texto": "29 entre 512 y 513",
+        "precision": "cuadra",
+        "lat": -34.904695,
+        "lon": -58.013585,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/la-plata/murio-la-referente-un-historico-comedor-la-plata-y-el-intendente-julio-alak-la-despidio-redes-n137882"
+        ],
+        "ids_notas": [
+          "137882"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
     }
   ]
 }

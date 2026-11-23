@@ -10207,6 +10207,144 @@
         "lat": -34.9589,
         "lon": -57.98745
       }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id": "137864",
+        "url": "https://www.0221.com.ar/policiales/ladrones-entraron-una-casa-gonnet-y-amenazaron-dos-medicos-cortarles-los-dedos-y-las-orejas-n137864",
+        "fecha_pub": "2026-11-23 10:17",
+        "fecha_hecho": "2026-11-23 03:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "robo",
+        "gravedad": "arma_o_entradera",
+        "lugar_texto": "Camino Centenario",
+        "precision": "cuadra",
+        "lat": null,
+        "lon": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -58.02653,
+          -34.895925
+        ]
+      },
+      "properties": {
+        "id": "137865",
+        "url": "https://www.0221.com.ar/la-plata/dos-hombres-discutieron-gonnet-y-cuando-se-iban-uno-desato-una-balacera-que-casi-termina-tragedia-n137865",
+        "fecha_pub": "2026-11-23 10:43",
+        "fecha_hecho": "2026-11-23 10:43",
+        "fecha_hecho_es_publicacion": true,
+        "tipo_nota": "hecho",
+        "categoria": "homicidio_balacera",
+        "gravedad": "fatal",
+        "lugar_texto": "29 entre 496 y 497",
+        "precision": "cuadra",
+        "lat": -34.895925,
+        "lon": -58.02653
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.97762,
+          -34.88416
+        ]
+      },
+      "properties": {
+        "id": "137880",
+        "url": "https://www.0221.com.ar/la-plata/video-tension-ringuelet-un-incendio-pastizales-que-llego-las-vias-del-tren-n137880",
+        "fecha_pub": "2026-11-23 15:31",
+        "fecha_hecho": "2026-11-23 15:31",
+        "fecha_hecho_es_publicacion": true,
+        "tipo_nota": "hecho",
+        "categoria": "incendio",
+        "gravedad": "baja",
+        "lugar_texto": "1 y 519",
+        "precision": "esquina",
+        "lat": -34.88416,
+        "lon": -57.97762
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.96722,
+          -34.910295
+        ]
+      },
+      "properties": {
+        "id": "137883",
+        "url": "https://www.0221.com.ar/policiales/una-motociclista-protagonizo-un-grave-accidente-la-plata-y-sufrio-una-fractura-expuesta-n137883",
+        "fecha_pub": "2026-11-23 15:57",
+        "fecha_hecho": "2026-11-23 15:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "accidente_vial",
+        "gravedad": "heridos",
+        "lugar_texto": "38 y 12",
+        "precision": "esquina",
+        "lat": -34.910295,
+        "lon": -57.96722
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -58.013585,
+          -34.904695
+        ]
+      },
+      "properties": {
+        "id": "137882",
+        "url": "https://www.0221.com.ar/la-plata/murio-la-referente-un-historico-comedor-la-plata-y-el-intendente-julio-alak-la-despidio-redes-n137882",
+        "fecha_pub": "2026-11-23 16:55",
+        "fecha_hecho": "2026-11-23 16:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "otro",
+        "gravedad": "alta",
+        "lugar_texto": "29 entre 512 y 513",
+        "precision": "cuadra",
+        "lat": -34.904695,
+        "lon": -58.013585
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.94001,
+          -34.942458
+        ]
+      },
+      "properties": {
+        "id": "137892",
+        "url": "https://www.0221.com.ar/policiales/un-conductor-didi-fue-baleado-un-intento-robo-la-plata-y-termino-internado-n137892",
+        "fecha_pub": "2026-11-23 18:07",
+        "fecha_hecho": "2026-11-23 03:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "homicidio_balacera",
+        "gravedad": "fatal",
+        "lugar_texto": "19 y 72",
+        "precision": "esquina",
+        "lat": -34.942458,
+        "lon": -57.94001
+      }
     }
   ]
 }
