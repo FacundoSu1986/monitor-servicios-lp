@@ -13742,6 +13742,99 @@
         "n_notas": 1,
         "confianza": "media"
       }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.927675,
+          -34.931205
+        ]
+      },
+      "properties": {
+        "id_evento": "e137899",
+        "categoria": "accidente_vial",
+        "gravedad": "heridos",
+        "fecha_hecho": "2026-11-24 03:00",
+        "lugar_texto": "7 y 72",
+        "precision": "esquina",
+        "lat": -34.931205,
+        "lon": -57.927675,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/un-cadete-la-policia-bonaerense-quiso-robar-una-moto-escapo-y-choco-una-agente-termino-detenido-n137899"
+        ],
+        "ids_notas": [
+          "137899"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id_evento": "e137922",
+        "categoria": "accidente_vial",
+        "gravedad": "fatal",
+        "fecha_hecho": "2026-11-24 11:00",
+        "lugar_texto": "82 y 85",
+        "precision": "esquina",
+        "lat": null,
+        "lon": null,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/el-fiscal-pidio-10-anos-carcel-la-toretto-el-atropello-fatal-walter-armand-n137922"
+        ],
+        "ids_notas": [
+          "137922"
+        ],
+        "tipos_nota": [
+          "seguimiento_judicial"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.97417,
+          -34.929845
+        ]
+      },
+      "properties": {
+        "id_evento": "e137906",
+        "categoria": "robo",
+        "gravedad": "arma_o_entradera",
+        "fecha_hecho": "2026-11-29 09:00",
+        "lugar_texto": "45 entre 26 y 27",
+        "precision": "cuadra",
+        "lat": -34.929845,
+        "lon": -57.97417,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/violento-robo-la-plata-un-jubilado-intento-resistirse-y-termino-golpeado-dos-ladrones-n137906"
+        ],
+        "ids_notas": [
+          "137906"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
     }
   ]
 }

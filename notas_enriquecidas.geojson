@@ -10345,6 +10345,72 @@
         "lat": -34.942458,
         "lon": -57.94001
       }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.927675,
+          -34.931205
+        ]
+      },
+      "properties": {
+        "id": "137899",
+        "url": "https://www.0221.com.ar/policiales/un-cadete-la-policia-bonaerense-quiso-robar-una-moto-escapo-y-choco-una-agente-termino-detenido-n137899",
+        "fecha_pub": "2026-11-24 09:10",
+        "fecha_hecho": "2026-11-24 03:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "accidente_vial",
+        "gravedad": "heridos",
+        "lugar_texto": "7 y 72",
+        "precision": "esquina",
+        "lat": -34.931205,
+        "lon": -57.927675
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.97417,
+          -34.929845
+        ]
+      },
+      "properties": {
+        "id": "137906",
+        "url": "https://www.0221.com.ar/policiales/violento-robo-la-plata-un-jubilado-intento-resistirse-y-termino-golpeado-dos-ladrones-n137906",
+        "fecha_pub": "2026-11-24 09:49",
+        "fecha_hecho": "2026-11-29 09:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "robo",
+        "gravedad": "arma_o_entradera",
+        "lugar_texto": "45 entre 26 y 27",
+        "precision": "cuadra",
+        "lat": -34.929845,
+        "lon": -57.97417
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id": "137922",
+        "url": "https://www.0221.com.ar/policiales/el-fiscal-pidio-10-anos-carcel-la-toretto-el-atropello-fatal-walter-armand-n137922",
+        "fecha_pub": "2026-11-24 11:43",
+        "fecha_hecho": "2026-11-24 11:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "seguimiento_judicial",
+        "categoria": "accidente_vial",
+        "gravedad": "fatal",
+        "lugar_texto": "82 y 85",
+        "precision": "esquina",
+        "lat": null,
+        "lon": null
+      }
     }
   ]
 }
