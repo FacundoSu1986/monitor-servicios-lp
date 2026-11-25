@@ -10411,6 +10411,96 @@
         "lat": null,
         "lon": null
       }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.88428,
+          -34.87092
+        ]
+      },
+      "properties": {
+        "id": "137920",
+        "url": "https://www.0221.com.ar/policiales/un-delincuente-entro-armado-un-almacen-berisso-y-se-fue-500000-n137920",
+        "fecha_pub": "2026-11-24 17:58",
+        "fecha_hecho": "2026-11-23 17:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "robo",
+        "gravedad": "arma_o_entradera",
+        "lugar_texto": "11 y 165",
+        "precision": "esquina",
+        "lat": -34.87092,
+        "lon": -57.88428
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id": "137934",
+        "url": "https://www.0221.com.ar/policiales/video-un-joven-moto-choco-contra-una-camioneta-ensenada-y-termino-arriba-del-parabrisas-n137934",
+        "fecha_pub": "2026-11-24 18:35",
+        "fecha_hecho": "2026-11-24 18:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "accidente_vial",
+        "gravedad": "heridos",
+        "lugar_texto": "Ensenada",
+        "precision": "localidad",
+        "lat": null,
+        "lon": null
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.9605,
+          -34.888155
+        ]
+      },
+      "properties": {
+        "id": "137951",
+        "url": "https://www.0221.com.ar/policiales/videos-dos-robos-menos-24-horas-tolosa-volvieron-poner-alerta-los-vecinos-n137951",
+        "fecha_pub": "2026-11-24 18:51",
+        "fecha_hecho": "2026-11-24 03:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "robo",
+        "gravedad": "hurto",
+        "lugar_texto": "119 entre 529 y 530",
+        "precision": "cuadra",
+        "lat": -34.888155,
+        "lon": -57.9605
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.9924,
+          -34.94078
+        ]
+      },
+      "properties": {
+        "id": "137955",
+        "url": "https://www.0221.com.ar/policiales/cayo-un-delincuente-19-anos-la-plata-un-frondoso-prontuario-el-robo-una-moto-n137955",
+        "fecha_pub": "2026-11-24 19:53",
+        "fecha_hecho": "2026-11-24 19:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "seguimiento_judicial",
+        "categoria": "robo",
+        "gravedad": "hurto",
+        "lugar_texto": "42 entre 140 y 141",
+        "precision": "cuadra",
+        "lat": -34.94078,
+        "lon": -57.9924
+      }
     }
   ]
 }
