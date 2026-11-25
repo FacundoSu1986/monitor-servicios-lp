@@ -10501,6 +10501,102 @@
         "lat": -34.94078,
         "lon": -57.9924
       }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.93944,
+          -34.93775
+        ]
+      },
+      "properties": {
+        "id": "137980",
+        "url": "https://www.0221.com.ar/policiales/una-intensa-persecucion-la-plata-termino-dos-patrulleros-destruidos-una-casa-rota-y-tres-detenidos-n137980",
+        "fecha_pub": "2026-11-25 09:05",
+        "fecha_hecho": "2026-11-25 09:05",
+        "fecha_hecho_es_publicacion": true,
+        "tipo_nota": "hecho",
+        "categoria": "accidente_vial",
+        "gravedad": "danos",
+        "lugar_texto": "16 y 70",
+        "precision": "esquina",
+        "lat": -34.93775,
+        "lon": -57.93944
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.994335,
+          -34.887095
+        ]
+      },
+      "properties": {
+        "id": "137983",
+        "url": "https://www.0221.com.ar/policiales/tres-delincuentes-sorprendieron-una-jubilada-ringuelet-y-la-ataron-robarle-n137983",
+        "fecha_pub": "2026-11-25 09:54",
+        "fecha_hecho": "2026-11-25 03:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "robo",
+        "gravedad": "hurto",
+        "lugar_texto": "512 bis entre 10 y 10 bis",
+        "precision": "cuadra",
+        "lat": -34.887095,
+        "lon": -57.994335
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.93524,
+          -34.9358
+        ]
+      },
+      "properties": {
+        "id": "137992",
+        "url": "https://www.0221.com.ar/la-plata/revelan-que-dos-los-tres-detenidos-la-impactante-persecucion-la-plata-tienen-antecedentes-robo-n137992",
+        "fecha_pub": "2026-11-25 11:01",
+        "fecha_hecho": "2026-11-25 11:01",
+        "fecha_hecho_es_publicacion": true,
+        "tipo_nota": "anuncio",
+        "categoria": "robo",
+        "gravedad": "arma_o_entradera",
+        "lugar_texto": "13 y 71",
+        "precision": "esquina",
+        "lat": -34.9358,
+        "lon": -57.93524
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.91993,
+          -34.91245
+        ]
+      },
+      "properties": {
+        "id": "138000",
+        "url": "https://www.0221.com.ar/la-plata/video-asi-fue-la-impresionante-persecucion-las-calles-la-plata-que-termino-tres-detenidos-n138000",
+        "fecha_pub": "2026-11-25 11:59",
+        "fecha_hecho": "2026-11-25 11:59",
+        "fecha_hecho_es_publicacion": true,
+        "tipo_nota": "hecho",
+        "categoria": "accidente_vial",
+        "gravedad": "heridos",
+        "lugar_texto": "66 y 122",
+        "precision": "esquina",
+        "lat": -34.91245,
+        "lon": -57.91993
+      }
     }
   ]
 }
