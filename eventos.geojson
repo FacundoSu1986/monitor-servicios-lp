@@ -13745,6 +13745,33 @@
     },
     {
       "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id_evento": "e138020",
+        "categoria": "accidente_vial",
+        "gravedad": "heridos",
+        "fecha_hecho": "2026-11-23 16:00",
+        "lugar_texto": "44 y 225",
+        "precision": "esquina",
+        "lat": null,
+        "lon": null,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/la-atropellaron-cuando-volvia-un-cumpleanos-la-plata-esta-coma-y-buscan-al-conductor-que-huyo-n138020"
+        ],
+        "ids_notas": [
+          "138020"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -14056,6 +14083,39 @@
         ],
         "tipos_nota": [
           "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.91303,
+          -34.942153
+        ]
+      },
+      "properties": {
+        "id_evento": "e138044",
+        "categoria": "otro",
+        "gravedad": "alta",
+        "fecha_hecho": "2026-11-25 20:00",
+        "lugar_texto": "7 y 86",
+        "precision": "esquina",
+        "lat": -34.942153,
+        "lon": -57.91303,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/un-hombre-murio-caer-un-puente-un-arroyo-la-plata-e-investigan-las-circunstancias-n138044"
+        ],
+        "ids_notas": [
+          "138044"
+        ],
+        "tipos_nota": [
+          "anuncio"
         ],
         "n_notas": 1,
         "confianza": "media"
