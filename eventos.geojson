@@ -14027,6 +14027,39 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -57.914187,
+          -34.941303
+        ]
+      },
+      "properties": {
+        "id_evento": "e138054",
+        "categoria": "accidente_vial",
+        "gravedad": "fatal",
+        "fecha_hecho": "2026-11-25 10:00",
+        "lugar_texto": "7 y 85",
+        "precision": "esquina",
+        "lat": -34.941303,
+        "lon": -57.914187,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/la-plata/identificaron-al-hombre-que-murio-caer-un-puente-al-arroyo-maldonado-n138054"
+        ],
+        "ids_notas": [
+          "138054"
+        ],
+        "tipos_nota": [
+          "seguimiento_judicial"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -57.93524,
           -34.9358
         ]
@@ -14116,6 +14149,33 @@
         ],
         "tipos_nota": [
           "anuncio"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id_evento": "e138053",
+        "categoria": "robo",
+        "gravedad": "arma_o_entradera",
+        "fecha_hecho": "2026-11-26 11:14",
+        "lugar_texto": "48 y 74",
+        "precision": "esquina",
+        "lat": null,
+        "lon": null,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/video-dos-robos-comercios-la-plata-terminaron-un-mismo-sospechoso-detenido-n138053"
+        ],
+        "ids_notas": [
+          "138053"
+        ],
+        "tipos_nota": [
+          "hecho"
         ],
         "n_notas": 1,
         "confianza": "media"
