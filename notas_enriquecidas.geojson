@@ -10681,6 +10681,30 @@
         "lat": null,
         "lon": null
       }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -58.07179,
+          -34.85178
+        ]
+      },
+      "properties": {
+        "id": "138099",
+        "url": "https://www.0221.com.ar/la-plata/un-salvaje-ataque-dos-pitbull-dejo-una-mujer-la-plata-gravemente-herida-n138099",
+        "fecha_pub": "2026-11-26 19:27",
+        "fecha_hecho": "2026-11-26 19:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "otro",
+        "gravedad": "media",
+        "lugar_texto": "2 entre 422 y 422 bis",
+        "precision": "cuadra",
+        "lat": -34.85178,
+        "lon": -58.07179
+      }
     }
   ]
 }
