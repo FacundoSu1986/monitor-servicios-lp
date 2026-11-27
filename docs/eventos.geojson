@@ -14183,6 +14183,33 @@
     },
     {
       "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id_evento": "e138121",
+        "categoria": "robo",
+        "gravedad": "hurto",
+        "fecha_hecho": "2026-11-26 12:00",
+        "lugar_texto": "City Bell",
+        "precision": "localidad",
+        "lat": null,
+        "lon": null,
+        "lat_aprox": -34.863,
+        "lon_aprox": -58.047,
+        "urls": [
+          "https://www.0221.com.ar/policiales/rompieron-quinta-vez-la-vidriera-una-whiskeria-city-bell-y-robaron-botellas-pero-no-tenian-whisky-n138121"
+        ],
+        "ids_notas": [
+          "138121"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "baja"
+      }
+    },
+    {
+      "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -14206,6 +14233,105 @@
         ],
         "ids_notas": [
           "138099"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.95585,
+          -34.924735
+        ]
+      },
+      "properties": {
+        "id_evento": "e138119",
+        "categoria": "robo",
+        "gravedad": "hurto",
+        "fecha_hecho": "2026-11-26 22:00",
+        "lugar_texto": "54 entre 15 y 16",
+        "precision": "cuadra",
+        "lat": -34.924735,
+        "lon": -57.95585,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/rompieron-un-audi-la-plata-y-robaron-10-iphones-que-un-comerciante-traia-capital-federal-n138119"
+        ],
+        "ids_notas": [
+          "138119"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.962705,
+          -34.89308
+        ]
+      },
+      "properties": {
+        "id_evento": "e138152",
+        "categoria": "robo",
+        "gravedad": "hurto",
+        "fecha_hecho": "2026-11-27 03:00",
+        "lugar_texto": "531 entre 115 y 115 bis",
+        "precision": "cuadra",
+        "lat": -34.89308,
+        "lon": -57.962705,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/la-plata/robaron-una-escuela-secundaria-tolosa-segunda-vez-el-ano-n138152"
+        ],
+        "ids_notas": [
+          "138152"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -58.088342,
+          -34.986717
+        ]
+      },
+      "properties": {
+        "id_evento": "e138120",
+        "categoria": "robo",
+        "gravedad": "hurto",
+        "fecha_hecho": "2026-11-27 15:11",
+        "lugar_texto": "520 entre 209 y 210",
+        "precision": "cuadra",
+        "lat": -34.986717,
+        "lon": -58.088342,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/dos-delincuentes-asaltaron-una-funeraria-la-plata-maniataron-una-empleada-y-golpearon-un-jubilado-n138120"
+        ],
+        "ids_notas": [
+          "138120"
         ],
         "tipos_nota": [
           "hecho"
