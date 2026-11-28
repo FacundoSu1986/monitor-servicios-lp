@@ -10795,6 +10795,24 @@
         "lat": -34.89308,
         "lon": -57.962705
       }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id": "138160",
+        "url": "https://www.0221.com.ar/policiales/le-robaron-el-auto-una-joven-los-hornos-y-lo-recuperaron-una-persecucion-y-un-tiroteo-n138160",
+        "fecha_pub": "2026-11-27 18:06",
+        "fecha_hecho": "2026-11-27 03:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "homicidio_balacera",
+        "gravedad": "fatal",
+        "lugar_texto": "71 y 161",
+        "precision": "esquina",
+        "lat": null,
+        "lon": null
+      }
     }
   ]
 }

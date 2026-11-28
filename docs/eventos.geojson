@@ -14309,6 +14309,33 @@
     },
     {
       "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id_evento": "e138160",
+        "categoria": "homicidio_balacera",
+        "gravedad": "fatal",
+        "fecha_hecho": "2026-11-27 03:00",
+        "lugar_texto": "71 y 161",
+        "precision": "esquina",
+        "lat": null,
+        "lon": null,
+        "lat_aprox": null,
+        "lon_aprox": null,
+        "urls": [
+          "https://www.0221.com.ar/policiales/le-robaron-el-auto-una-joven-los-hornos-y-lo-recuperaron-una-persecucion-y-un-tiroteo-n138160"
+        ],
+        "ids_notas": [
+          "138160"
+        ],
+        "tipos_nota": [
+          "hecho"
+        ],
+        "n_notas": 1,
+        "confianza": "media"
+      }
+    },
+    {
+      "type": "Feature",
       "geometry": {
         "type": "Point",
         "coordinates": [
