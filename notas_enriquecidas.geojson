@@ -10813,6 +10813,120 @@
         "lat": null,
         "lon": null
       }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.91362,
+          -34.92802
+        ]
+      },
+      "properties": {
+        "id": "138186",
+        "url": "https://www.0221.com.ar/policiales/le-robaron-la-moto-la-plata-sus-vecinos-ayudaron-detener-los-sospechosos-n138186",
+        "fecha_pub": "2026-11-28 10:00",
+        "fecha_hecho": "2026-11-26 10:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "robo",
+        "gravedad": "hurto",
+        "lugar_texto": "78 y 116",
+        "precision": "esquina",
+        "lat": -34.92802,
+        "lon": -57.91362
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.996975,
+          -34.920525
+        ]
+      },
+      "properties": {
+        "id": "138181",
+        "url": "https://www.0221.com.ar/policiales/asaltaron-una-panaderia-tolosa-amenazaron-la-empleada-y-se-llevaron-la-recaudacion-n138181",
+        "fecha_pub": "2026-11-28 10:12",
+        "fecha_hecho": "2026-11-28 10:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "robo",
+        "gravedad": "arma_o_entradera",
+        "lugar_texto": "529 y 31",
+        "precision": "esquina",
+        "lat": -34.920525,
+        "lon": -57.996975
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -58.048258,
+          -34.995337
+        ]
+      },
+      "properties": {
+        "id": "138193",
+        "url": "https://www.0221.com.ar/la-plata/un-motociclista-murio-la-plata-un-fuerte-accidente-transito-n138193",
+        "fecha_pub": "2026-11-28 11:08",
+        "fecha_hecho": "2026-11-28 03:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "accidente_vial",
+        "gravedad": "fatal",
+        "lugar_texto": "44 y 197",
+        "precision": "esquina",
+        "lat": -34.995337,
+        "lon": -58.048258
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -57.90484,
+          -34.94897
+        ]
+      },
+      "properties": {
+        "id": "138172",
+        "url": "https://www.0221.com.ar/la-plata/denuncian-que-un-camionero-engancho-cables-la-plata-derribo-postes-luz-y-se-fue-del-lugar-n138172",
+        "fecha_pub": "2026-11-28 11:22",
+        "fecha_hecho": "2026-11-27 11:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "accidente_vial",
+        "gravedad": "danos",
+        "lugar_texto": "7 y 97",
+        "precision": "esquina",
+        "lat": -34.94897,
+        "lon": -57.90484
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": null,
+      "properties": {
+        "id": "138189",
+        "url": "https://www.0221.com.ar/policiales/video-una-mujer-robo-una-bicicleta-la-plata-forcejear-el-candado-plena-via-publica-n138189",
+        "fecha_pub": "2026-11-28 11:36",
+        "fecha_hecho": "2026-11-27 11:00",
+        "fecha_hecho_es_publicacion": false,
+        "tipo_nota": "hecho",
+        "categoria": "robo",
+        "gravedad": "hurto",
+        "lugar_texto": "Diagonal 80",
+        "precision": "cuadra",
+        "lat": null,
+        "lon": null
+      }
     }
   ]
 }
